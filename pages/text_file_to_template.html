@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <!--    <link rel="icon" type="image/svg+xml" href="/vite.svg" />-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="/src/style.css">
+    <title>Red DF</title>
+</head>
+<body class="bg-gray-950 text-white">
+<nav class="bg-gray-800">
+    <div class="max-w-7xl px-2 sm:px-6 lg:px-8">
+        <div class="relative flex h-16 items-center justify-between">
+            <div class="flex flex-1 items-stretch justify-start">
+                <div class="ml-6">
+                    <div class="flex space-x-4">
+                        <a href="/" class="nav-item">Home</a>
+                        <a href="#" class="nav-item">Color Palette</a>
+                        <a href="#" class="nav-item">Template Splitter</a>
+                        <a href="#" class="nav-item nav-selected-item">Text File to Template</a>
+                        <a href="#" class="nav-item">Skin Pixel Art Generator</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <header>
+        <h1>Text File to Template</h1>
+        <h2>Convert a text file separated by newlines to a list</h2>
+    </header>
+
+    <h2>Pick a file!</h2>
+    <p id="resultText" class="text-red">After selecting a file, it will be processed. If you are a CodeClient user run /auth right now!</p>
+    <label class="file-upload">
+        <input type="file">
+        Browse...
+    </label>
+
+
+</main>
+
+<script type="module" src="/src/main.js"></script>
+<script type="module">
+    import * as pako from "pako";
+
+    let recodeSocketOpen = false
+    const recodeSocket = new WebSocket('ws://localhost:31371/codeutilities/item')
+    recodeSocket.onopen = () => {
+        recodeSocketOpen = true
+    }
+
+    let codeClientSocketOpen = false
+    const codeClientSocket = new WebSocket('ws://localhost:31375');
+    // Only mark connection as opened when we receive a message of "auth"
+    codeClientSocket.onmessage = (event) => {
+        if (event.data === "auth") {
+            codeClientSocketOpen = true
+        }
+    }
+
+    function encodeTemplate(template) {
+        // GZIP & Base64 encode the template
+        let data = pako.gzip(template)
+        let data2 = String.fromCharCode.apply(null, [...new Uint16Array(data)]);
+        return btoa(data2)
+    }
+
+    const picker = document.querySelector('input[type="file"]')
+
+    const FUNCTION_NAME = "test"
+    const VARIABLE_NAME = "output"
+    const USE_PARAMETER = true
+    const VARIABLE_SCOPE = USE_PARAMETER ? "line" : "unsaved"
+
+    picker.addEventListener("change", async () => {
+        if (picker.files.length !== 1) return;
+
+        const file = picker.files[0]
+        const text = await file.text()
+
+        // We have the file, time to process!
+
+        const lines = text.split('\n')
+
+
+        // Our starting template with just the function block
+        let template = {
+            blocks: [
+                {
+                    id: "block",
+                    block: "func",
+                    args: {
+                        items: [
+                            {
+                                item: {
+                                    id: "bl_tag",
+                                    data: {
+                                        option: "False",
+                                        tag: "Is Hidden",
+                                        action: "dynamic",
+                                        block: "func"
+                                    }
+                                },
+                                slot: 26
+                            }
+                        ]
+                    },
+                    data: FUNCTION_NAME
+                }
+            ]
+        }
+
+        function getStringValue(str, slot) {
+            return {
+                item: {
+                    id: "txt",
+                    data: {
+                        name: str.replace("\r", "")
+                    }
+                },
+                slot: slot
+            }
+        }
+
+        // Add the parameter into the function if needed
+        if (USE_PARAMETER) {
+            template.blocks[0].args.items.push({
+                item: {
+                    id: "pn_el",
+                    data: {
+                        name: VARIABLE_NAME,
+                        type: "var",
+                        plural: false,
+                        optional: false
+                    }
+                },
+                slot: 0
+            })
+        }
+
+        let placedCreateList = false;
+        let items = [
+            {
+                item: {
+                    id: "var",
+                    data: {
+                        name: VARIABLE_NAME,
+                        scope: VARIABLE_SCOPE
+                    }
+                },
+                slot: 0
+            }
+        ]
+        let slot = 1;
+        for (let index in lines) {
+            index = parseInt(index)
+
+            // Place the action if we ran out of slots or if we're at the end of the lines
+            if (slot === 27 || index === lines.length - 1) {
+                template.blocks.push(
+                    {
+                        id: "block",
+                        block: "set_var",
+                        args: {
+                            items: items
+                        },
+                        action: placedCreateList ? "AppendList" : "CreateList",
+                    }
+                )
+                if (!placedCreateList) placedCreateList = true; // We only want to create the list once
+
+                items = [
+                    {
+                        item: {
+                            id: "var",
+                            data: {
+                                name: VARIABLE_NAME,
+                                scope: VARIABLE_SCOPE
+                            }
+                        },
+                        slot: 0
+                    }
+                ]
+                slot = 1;
+            }
+
+            items.push(getStringValue(lines[index], slot))
+
+            slot++
+        }
+
+        if (recodeSocketOpen) recodeSocket.send(JSON.stringify(
+            {
+                type: "template",
+                data: JSON.stringify({
+                    author: "Red DF Website",
+                    name: "Text File to Template",
+                    code: encodeTemplate(JSON.stringify(template)).toString()
+                }),
+                source: "Red DF Website"
+            }
+        ))
+
+        if (codeClientSocketOpen)
+            codeClientSocket.send(
+                `give {Count:1b,Slot:0b,id:"minecraft:ender_chest",tag:{display: {Name: '{"text":"Text File To Template","color":"aqua","italic":false}'}, PublicBukkitValues:{"hypercube:codetemplatedata": '{"author":"Red DF Website","name":"Text File to Template","code":"${encodeTemplate(JSON.stringify(template))}"}'}}}`
+            )
+
+        document.querySelector('#resultText').innerText = "Template sent to recode and CodeClient!"
+
+    })
+
+</script>
+</body>
+</html>
