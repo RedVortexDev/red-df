@@ -35,6 +35,17 @@
         @apply hidden
     }
 
+    input[type="text"] {
+        @apply bg-gray-800 rounded-md p-2
+    }
+
+    select {
+        @apply bg-gray-800 rounded-md p-2
+    }
+
+    label {
+        @apply my-3
+    }
 }
 
 @layer components {

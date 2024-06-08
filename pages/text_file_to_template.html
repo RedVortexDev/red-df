@@ -39,10 +39,28 @@
         Browse...
     </label>
 
+    <h2>Options</h2>
+    <div class="grid grid-cols-4 grid-rows-2 gap-1.5">
+        <label for="functionName">Function Name</label>
+        <label for="variableName">Variable Name</label>
+        <label for="useParameter">Use Parameter (overrides Variable Scope)</label>
+        <label for="variableScope">Variable Scope</label>
+
+        <input autocomplete="off" id="functionName" type="text" value="text">
+        <input autocomplete="off" id="variableName" type="text" value="output">
+        <input autocomplete="off" checked id="useParameter" type="checkbox">
+        <select autocomplete="off" id="variableScope">
+            <option value="unsaved">Global</option>
+            <option value="saved">Saved</option>
+            <option selected="selected" value="line">Line</option>
+            <option value="local">Local</option>
+        </select>
+    </div>
+
     <br>
     <p>
-        After selecting a file, it will be processed and sent to you in-game. If you are a CodeClient user run /auth
-        right now!
+        After selecting a file, it will be processed and sent to you in-game. <b>If you are a CodeClient user run /auth
+        right now!</b>
         <br>
         All files are processed locally, and nothing is uploaded anywhere (except for the template to recode/codeclient)
     </p>
@@ -77,12 +95,12 @@
 
     const picker = document.querySelector('input[type="file"]')
 
-    const FUNCTION_NAME = "test"
-    const VARIABLE_NAME = "output"
-    const USE_PARAMETER = true
-    const VARIABLE_SCOPE = USE_PARAMETER ? "line" : "unsaved"
-
     picker.addEventListener("change", async () => {
+        const FUNCTION_NAME = document.querySelector('#functionName').value.replace("\r", "")
+        const VARIABLE_NAME = document.querySelector('#variableName').value.replace("\r", "")
+        const USE_PARAMETER = document.querySelector('#useParameter').checked
+        const VARIABLE_SCOPE = USE_PARAMETER ? "line" : document.querySelector('#variableScope').value
+
         if (picker.files.length !== 1) return;
 
         const file = picker.files[0]
