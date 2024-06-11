@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+    --color: 0
+}
+
 @layer base {
     h1 {
         @apply text-5xl font-bold
@@ -60,4 +64,26 @@
 
 .file-upload {
     @apply border-2 border-gray-700 py-1.5 px-3 cursor-pointer rounded-sm hover:bg-gray-900 active:bg-gray-800
+}
+
+.palette-color {
+    @apply cursor-pointer transition-all hover:scale-125 active:scale-[120%] active:rounded-sm hover:rounded-md hover:shadow-black/35 hover:shadow-lg z-0 hover:z-50;
+    background-color: var(--color);
+    padding-bottom: 100%;
+    width: 100%;
+}
+
+#palette-container {
+    display: grid;
+    width: 75%;
+    margin: auto;
+    grid-template-columns: repeat(19, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    grid-auto-flow: column;
+    @apply border-gray-900 border-2 rounded-s
+}
+
+.palette-color-text {
+    background-color: var(--color);
+    @apply p-1 rounded-md font-mono
 }
