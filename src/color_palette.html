@@ -9,7 +9,7 @@
     <meta content="Updated color palette with click to copy" name="description">
     <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <link href="/src/style.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
     <title>Red DF</title>
 </head>
 <body class="bg-gray-950 text-white">
@@ -19,10 +19,10 @@
             <div class="flex flex-1 items-stretch justify-start">
                 <div class="ml-6">
                     <div class="flex space-x-4">
-                        <a class="nav-item" href="/">Home</a>
+                        <a class="nav-item" href="/public">Home</a>
                         <a class="nav-item nav-selected-item" href="#">Color Palette</a>
                         <a class="nav-item" href="#">Template Splitter</a>
-                        <a class="nav-item" href="/pages/text_file_to_template.html">Text File to Template</a>
+                        <a class="nav-item" href="/text_file_to_template">Text File to Template</a>
                         <a class="nav-item" href="#">Skin Pixel Art Generator</a>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
 
 </main>
 
-<script src="/src/main.js" type="module"></script>
+<script src="main.js" type="module"></script>
 <script type="module">
     function hexToRgb(hex) {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
