@@ -21,7 +21,7 @@
         }
 
         .codeblock {
-            @apply relative w-max max-w-80 min-w-40 flex
+            @apply relative w-max max-w-80 min-w-40 grid grid-rows-1 grid-cols-2
         }
 
         .chest {
@@ -86,7 +86,7 @@
 <main>
     <header style="background-color: unset !important;">
         <div class="flex scale-125 mt-8">
-            <div class="codeblock grid">
+            <div class="codeblock">
                 <div>
                     <div class="mat loader min-h-80">
                         <div class="sign mt-40">
@@ -97,7 +97,7 @@
                 </div>
                 <div class="min-w-20 max-w-40 h-40 stone grid grid-cols-2 grid-rows-1"></div>
             </div>
-            <div class="codeblock grid">
+            <div class="codeblock">
                 <div>
                     <div class="chest"></div>
                     <div class="mat game">
@@ -111,7 +111,7 @@
                 </div>
                 <div class="min-w-20 max-w-40 h-40 stone grid grid-cols-2 grid-rows-1"></div>
             </div>
-            <div class="codeblock grid">
+            <div class="codeblock id">
                 <div>
                     <div class="chest"></div>
                     <div class="mat player">
