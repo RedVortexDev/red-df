@@ -6,6 +6,17 @@
     --color: 0
 }
 
+@font-face {
+    font-family: minecraft;
+    src: url(/MinecraftRegular.ttf) format("opentype")
+}
+
+@font-face {
+    font-family: minecraft;
+    src: url(/MinecraftBold.ttf) format("opentype");
+    font-weight: bold
+}
+
 @layer base {
     h1 {
         @apply text-5xl font-bold
