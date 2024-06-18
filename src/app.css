@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --background: 0 0% 3.9%;
+        --foreground: 0 0% 98%;
+        --card: 0 0% 3.9%;
+        --card-foreground: 0 0% 98%;
+        --popover: 0 0% 3.9%;
+        --popover-foreground: 0 0% 98%;
+        --primary: 0 72.2% 50.6%;
+        --primary-foreground: 0 85.7% 97.3%;
+        --secondary: 0 0% 14.9%;
+        --secondary-foreground: 0 0% 98%;
+        --muted: 0 0% 14.9%;
+        --muted-foreground: 0 0% 63.9%;
+        --accent: 0 0% 14.9%;
+        --accent-foreground: 0 0% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 0 0% 14.9%;
+        --input: 0 0% 14.9%;
+        --ring: 0 72.2% 50.6%;
+        --radius: 0.5rem;
+    }
+
+    main {
+        @apply m-5;
+    }
+
+    header {
+        @apply flex flex-col p-2 mb-2 justify-center items-center rounded-lg;
+    }
+
+    header > h1 {
+        @apply text-3xl md:text-6xl font-black;
+    }
+
+    header > h2 {
+        @apply text-lg md:text-3xl font-medium;
+    }
+
+    h1 {
+        @apply text-xl md:text-2xl;
+    }
+
+    img {
+        @apply pointer-events-none select-none;
+    }
+
+    h1 {
+        @apply text-xl md:text-2xl;
+    }
+
+    p {
+        @apply text-sm md:text-base;
+    }
+
+    code {
+        @apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] text-sm font-semibold;
+    }
+}
+
+@layer base {
+    * {
+        @apply border-border;
+    }
+
+    body {
+        @apply bg-background text-foreground;
+    }
+}
+
+@layer components {
+    .blinker {
+        @apply animate-blink inline-block w-1 h-6 ml-2;
+    }
+
+    .blinker-visible {
+        @apply bg-theme;
+    }
+}
+
+.palette-color {
+    @apply cursor-pointer transition-all md:hover:scale-125 active:scale-[120%] active:rounded-sm md:hover:rounded-md md:hover:shadow-black/35 md:hover:shadow-lg z-0 hover:z-50 w-full;
+    background-color: var(--color);
+    padding-bottom: 100%;
+}
+
+.palette-container {
+    grid-template-columns: repeat(19, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    @apply border-gray-900 border-2 rounded-s grid w-3/4 m-auto grid-flow-row md:grid-flow-col;
+}
+
+.palette-color-text {
+    background-color: var(--color);
+    @apply p-1 rounded-md font-medium mx-2;
+}
