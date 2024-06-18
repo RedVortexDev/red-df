@@ -18,7 +18,8 @@
             <Info/>
             Please note!
         </p>
-        <p class="text-center max-w-md">This website assumes you know what you're doing, and have either recode or
-            CodeClient installed.</p>
+        <p class="text-center max-w-md">This website assumes you know what you're doing, and have either <a
+                class="underline" href="https://modrinth.com/mod/recode">recode</a> or
+            <a class="underline" href="https://modrinth.com/mod/codeclient">CodeClient</a> installed.</p>
     </div>
 </PageContent>
