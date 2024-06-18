@@ -1,6 +1,4 @@
 <script lang="ts">
-    import PageMeta from "./PageMeta.svelte";
-
     export let selectedItem: string = "";
 
     const navItems = [
@@ -9,8 +7,6 @@
         {name: "Text File to Template", href: "/text-file-to-template"},
     ];
 </script>
-
-<PageMeta title={selectedItem}/>
 
 <nav class="grid grid-cols-2 gap-5 p-2 bg-zinc-800 border-b-zinc-700 border-b-2 justify-around">
     <div class="w-fit">

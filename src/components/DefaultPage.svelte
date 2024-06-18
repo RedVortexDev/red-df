@@ -1,10 +1,13 @@
 <script lang="ts">
     import NavigationBar from "./NavigationBar.svelte";
     import PageContent from "./PageContent.svelte";
+    import PageMeta from "./PageMeta.svelte";
 
     export let pageName: string;
     export let subtitle: string;
 </script>
+
+<PageMeta description={subtitle} title={pageName}/>
 
 <NavigationBar selectedItem={pageName}/>
 <main>

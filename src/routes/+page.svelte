@@ -2,10 +2,12 @@
     import NavigationBar from "../components/NavigationBar.svelte";
     import PageContent from "../components/PageContent.svelte";
     import {Info} from "lucide-svelte";
+    import PageMeta from "../components/PageMeta.svelte";
 </script>
 
-<NavigationBar selectedItem="Home"/>
+<PageMeta description="DiamondFire Utilities"/>
 
+<NavigationBar selectedItem="Home"/>
 <PageContent>
     <img alt="RedVortex_ Player Head" class="w-44 h-auto" src="/favicon.png">
     <h1 class="font-medium">Hey, I'm <span class="text-theme font-bold">Red</span>!</h1>
