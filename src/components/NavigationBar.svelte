@@ -5,6 +5,7 @@
         {name: "Home", href: "/"},
         {name: "Color Palette", href: "/color-palette"},
         {name: "Text File to Template", href: "/text-file-to-template"},
+        {name: "How to Ask Questions", href: "/asking-questions"},
     ];
 </script>
 

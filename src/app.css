@@ -61,6 +61,10 @@
     code {
         @apply relative rounded bg-muted px-[0.3rem] py-[0.2rem] text-sm font-semibold;
     }
+
+    a {
+        @apply hover:underline
+    }
 }
 
 @layer base {
@@ -92,7 +96,7 @@
 .palette-container {
     grid-template-columns: repeat(19, 1fr);
     grid-template-rows: repeat(8, 1fr);
-    @apply border-gray-900 border-2 rounded-s grid w-3/4 m-auto grid-flow-row md:grid-flow-col;
+    @apply  rounded-s grid w-3/4 m-auto grid-flow-row md:grid-flow-col;
 }
 
 .palette-color-text {
