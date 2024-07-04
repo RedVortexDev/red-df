@@ -72,11 +72,8 @@
         }
 
         codeClientSocket = new WebSocket('ws://localhost:31375');
-        // Only mark connection as opened when we receive a message of "auth"
-        codeClientSocket.onmessage = (event) => {
-            if (event.data === "auth") {
-                codeClientSocketOpen = true
-            }
+        codeClientSocket.onopen = () => {
+            codeClientSocketOpen = true
         }
 
     })
