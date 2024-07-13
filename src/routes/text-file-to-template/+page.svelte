@@ -192,9 +192,12 @@
                 slot: 0
             }
         ];
-        let slot = 1;
+        let slot = 0;
 
-        for (let index = 0; index < lines.length; index++) {
+        for (let index = 0; index < lines.length; index++) {            
+            items.push(getStringValue(lines[index], slot));
+            slot++;
+
             // Place the action if we ran out of slots or if we're at the end of the lines
             if (slot === 27 || index === lines.length - 1) {
                 template.blocks.push({
@@ -203,7 +206,7 @@
                     args: {
                         items: items
                     },
-                    action: placedCreateList ? "AppendList" : "CreateList",
+                    action: placedCreateList ? "AppendValue" : "CreateList",
                 });
                 if (!placedCreateList) placedCreateList = true; // We only want to create the list once
 
@@ -221,9 +224,6 @@
                 ];
                 slot = 1;
             }
-
-            items.push(getStringValue(lines[index], slot));
-            slot++;
         }
 
         if (recodeSocketOpen) recodeSocket.send(JSON.stringify({
