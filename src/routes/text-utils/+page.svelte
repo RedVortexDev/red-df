@@ -62,17 +62,15 @@
             }
         }, 0);
 
-        const spaces = Math.floor((width - totalWidth) / 4 / 2);
-        const spaceString = spaces >= 1 ? "<space:" + spaces + ">" : "";
+    
+        const spaceWidth = 4;
+        const space = "<space:" + Math.floor((width - totalWidth) / spaceWidth / 2) + ">";
+        const zwnj = "<b>" + "‌".repeat(1 + (width - totalWidth) % spaceWidth) + "</b>";
 
-        const remainingPixels = (width - totalWidth) % 4;
-        const zwnjAmount = Math.floor(remainingPixels / 2);
-        const zwnjString =
-            zwnjAmount >= 1 && useZWNJ
-                ? "<b>" + "‌".repeat(zwnjAmount) + "</b>"
-                : "";
+        console.log(space, zwnj);
 
-        return spaceString + zwnjString + str + spaceString + zwnjString;
+        return space + (useZWNJ ? zwnj : "") + str + space;
+    
     };
 
     const generate = async () => {
