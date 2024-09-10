@@ -1,9 +1,21 @@
 <DefaultPage pageName="Color Palette" subtitle="Updated DiamondFire Color Palette">
     <h1 id="palette-status">Click on a color to copy it!</h1>
-    <div class="flex gap-2">
-        <Checkbox id="copyTag"/>
-        <Label class="font-light" for="copyTag">Copy MiniMessage Tag</Label>
-    </div>
+    
+    <RadioGroup.Root class="flex gap-4">
+        <div class="flex items-center space-x-2">
+            <RadioGroup.Item value="copyHex" id="copyHex" />
+            <Label for="copyHex">Copy Hex</Label>
+        </div>
+        <div class="flex items-center space-x-2">
+            <RadioGroup.Item value="copyTag" id="copyTag" />
+            <Label for="copyTag">Copy MiniMessage Tag</Label>
+        </div>
+        <div class="flex items-center space-x-2">
+            <RadioGroup.Item value="copyName" id="copyName" />
+            <Label for="copyName">Copy Color Name</Label>
+        </div>
+    </RadioGroup.Root>
+    
     <div class="palette-container">
         {#each COLOR_NAMES as color}
             {#each COLOR_SHADES as shade}
@@ -28,7 +40,7 @@
 
 <script lang="ts">
     import DefaultPage from "../../components/DefaultPage.svelte";
-    import {Checkbox} from "$lib/components/ui/checkbox/";
+    import * as RadioGroup from "$lib/components/ui/radio-group/index.js";
     import {Label} from "$lib/components/ui/label/";
 
     function getColorObj(color: string, shade: string) {
@@ -51,14 +63,20 @@
 
     function clickColor(color: Color) {
         const copyTag = document.getElementById("copyTag")?.ariaChecked == "true";
+        const copyName = document.getElementById("copyName")?.ariaChecked == "true";
 
-        const copy = copyTag ? `<${color.hex}>` : color.hex;
+        const colorName = color.override ? color.override : (color.group + '_' + color.shade).replace('_NEUTRAL', '');
+
+        var copy = color.hex;
+        if (copyTag) copy = `<${color.hex}>`;
+        if (copyName) copy = colorName;
+
         navigator.clipboard.writeText(copy);
 
         const statusText = document.getElementById("palette-status");
         if (!statusText) return;
         statusText.innerHTML = `Copied<span class="palette-color-text" style="--color: ${color.hex}">
-                                    ${color.override ? color.override : (color.group + '_' + color.shade).replace('_NEUTRAL', '')}
+                                    ${colorName}
                                 </span>to clipboard! <i>(${copy})</i>`;
 
         const paletteColorText = document.querySelector(".palette-color-text");
