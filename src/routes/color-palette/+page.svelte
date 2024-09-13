@@ -21,15 +21,15 @@
             {#each COLOR_SHADES as shade}
                 {#if getColorObj(color, shade)}
                     <div
-                            class="palette-color"
-                            role="button"
-                            tabindex="0"
-                            on:click={() => {clickColor(getColorObj(color, shade))}}
-                            on:keydown={() => {clickColor(getColorObj(color, shade))}}
-                            style="
-                            --color: {getColorObj(color, shade).hex};
-                            grid-row: {getGridPosition(shade, 'row')};
-                            grid-column: {getGridPosition(color, 'column')};
+                        class="palette-color"
+                        role="button"
+                        tabindex="0"
+                        on:click={() => {clickColor(getColorObj(color, shade))}}
+                        on:keydown={() => {clickColor(getColorObj(color, shade))}}
+                        style="
+                        --color: {getColorObj(color, shade).hex};
+                        grid-row: {getGridPosition(shade, 'row')};
+                        grid-column: {getGridPosition(color, 'column')};
                         "
                     ></div>
                 {/if}

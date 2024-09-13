@@ -9,7 +9,7 @@
 
 <NavigationBar selectedItem="Home"/>
 <PageContent>
-    <img alt="RedVortex_ Player Head" class="w-44 h-auto" src="/favicon.png">
+    <img alt="RedVortex_ Player Head" class="w-44 h-auto" src="https://mc-heads.net/head/fc513f92b66246e2ada30a3eb73808a3">
     <h1 class="font-medium">Hey, I'm <span class="text-theme font-bold">Red</span>!</h1>
     <p class="text-center max-w-md">This is my website, here you can find a bunch of DiamondFire utilities.</p>
     <br>
