@@ -2,10 +2,10 @@
     import Button from "$lib/components/ui/button/button.svelte";
     import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte";
     import Input from "$lib/components/ui/input/input.svelte";
-    import { Label } from "$lib/components/ui/label";
+    import {Label} from "$lib/components/ui/label";
     import DefaultPage from "../../components/DefaultPage.svelte";
 
-    import { onMount } from "svelte";
+    import {onMount} from "svelte";
     import Toolbar from "../../components/Toolbar.svelte";
 
     //@ts-ignore
@@ -73,14 +73,14 @@
 </script>
 
 <DefaultPage
-    pageName="Text Utilities"
-    subtitle="Generating and manipulating text"
+        pageName="Text Utilities"
+        subtitle="Generating and manipulating text"
 >
     <div class="max-w-lg flex flex-col gap-5 items-center">
-        <Input id="input" placeholder="Insert text" />
+        <Input id="input" placeholder="Insert text"/>
         <div class="flex flex-col gap-2">
             <div class="flex gap-2">
-                <Checkbox id="make-small" />
+                <Checkbox id="make-small"/>
                 <Label for="make-small">Make Small Caps</Label>
             </div>
         </div>

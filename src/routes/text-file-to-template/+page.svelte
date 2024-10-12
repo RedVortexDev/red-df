@@ -57,7 +57,7 @@
     import * as Select from "$lib/components/ui/select/";
     //@ts-ignore
     import * as Tooltip from "$lib/components/ui/tooltip";
-    import {TriangleAlert} from "lucide-svelte";
+    //import {TriangleAlert} from "lucide-svelte";
 
     import pako from "pako";
     import {onMount} from "svelte";
@@ -195,7 +195,7 @@
         ];
         let slot = 0;
 
-        for (let index = 0; index < lines.length; index++) {            
+        for (let index = 0; index < lines.length; index++) {
             items.push(getStringValue(lines[index], slot));
             slot++;
 

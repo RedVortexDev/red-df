@@ -13,7 +13,8 @@
 <nav class="grid grid-cols-2 gap-5 p-2 bg-zinc-800 border-b-zinc-700 border-b-2 justify-around">
     <div class="w-fit">
         <a class="flex gap-5 items-center text-xl text-theme font-medium" href="/">
-            <img alt="Website Logo" class="transition-transform hover:scale-110 active:scale-100" src="https://mc-heads.net/head/fc513f92b66246e2ada30a3eb73808a3"
+            <img alt="Website Logo" class="transition-transform hover:scale-110 active:scale-100"
+                 src="https://mc-heads.net/head/fc513f92b66246e2ada30a3eb73808a3"
                  width="50">
             RedVortex_
         </a>

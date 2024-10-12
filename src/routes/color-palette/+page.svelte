@@ -1,32 +1,32 @@
 <DefaultPage pageName="Color Palette" subtitle="Updated DiamondFire Color Palette">
     <h1 id="palette-status">Click on a color to copy it!</h1>
-    
+
     <RadioGroup.Root class="flex gap-4">
         <div class="flex items-center space-x-2">
-            <RadioGroup.Item value="copyHex" id="copyHex" />
+            <RadioGroup.Item id="copyHex" value="copyHex"/>
             <Label for="copyHex">Copy Hex</Label>
         </div>
         <div class="flex items-center space-x-2">
-            <RadioGroup.Item value="copyTag" id="copyTag" />
+            <RadioGroup.Item id="copyTag" value="copyTag"/>
             <Label for="copyTag">Copy MiniMessage Tag</Label>
         </div>
         <div class="flex items-center space-x-2">
-            <RadioGroup.Item value="copyName" id="copyName" />
+            <RadioGroup.Item id="copyName" value="copyName"/>
             <Label for="copyName">Copy Color Name</Label>
         </div>
     </RadioGroup.Root>
-    
+
     <div class="palette-container">
         {#each COLOR_NAMES as color}
             {#each COLOR_SHADES as shade}
                 {#if getColorObj(color, shade)}
                     <div
-                        class="palette-color"
-                        role="button"
-                        tabindex="0"
-                        on:click={() => {clickColor(getColorObj(color, shade))}}
-                        on:keydown={() => {clickColor(getColorObj(color, shade))}}
-                        style="
+                            class="palette-color"
+                            role="button"
+                            tabindex="0"
+                            on:click={() => {clickColor(getColorObj(color, shade))}}
+                            on:keydown={() => {clickColor(getColorObj(color, shade))}}
+                            style="
                         --color: {getColorObj(color, shade).hex};
                         grid-row: {getGridPosition(shade, 'row')};
                         grid-column: {getGridPosition(color, 'column')};
@@ -37,19 +37,20 @@
         {/each}
     </div>
 
-        <Toolbar title="Text Background">
+    <Toolbar title="Text Background">
+        <button
+                class="text-sm"
+                id="bg-color"
+                on:click={() => {changeImage(null)}}
+        >COLOR
+        </button>
+        {#each IMAGES as image}
             <button
-                    id="bg-color"
-                    class="text-sm"
-                    on:click={() => {changeImage(null)}}
-                >COLOR</button>
-            {#each IMAGES as image}
-                <button
                     style="background-image: url({image})"
                     on:click={() => {changeImage(image)}}
-                ></button>
-            {/each}
-        </Toolbar>
+            ></button>
+        {/each}
+    </Toolbar>
 </DefaultPage>
 
 <script lang="ts">
@@ -71,7 +72,7 @@
             if (override) this.override = override;
         }
     }
-    
+
     const COLOR_NAMES = [
         "RED", "SCARLET", "ORANGE", "GOLD", "MUSTARD", "YELLOW", "LIME", "GREEN", "TEAL", "AQUA", "SKY", "BLUE", "PURPLE", "AMETHYST", "MAGENTA", "PINK", "ROSE", "BROWN", "GRAY"
     ]
@@ -79,8 +80,8 @@
         "DARK_4", "DARK_3", "DARK_2", "DARK", "NEUTRAL", "LIGHT", "LIGHT_2", "LIGHT_3"
     ]
 
-    var currentColor: Color = new Color("#FFFFFF", "GRAY", 3, "WHITE");
-    var currentBackground: string | null = null;
+    let currentColor: Color = new Color("#FFFFFF", "GRAY", 3, "WHITE");
+    let currentBackground: string | null = null;
 
     const IMAGES = [
         "/palette/bg_overworld.jpg",
@@ -134,21 +135,19 @@
         var copy = currentColor.hex;
         if (copyTag) copy = `<${currentColor.hex}>`;
         if (copyName) copy = colorName;
-    
+
         const statusText = document.getElementById("palette-status");
         if (!statusText) return copy;
-        
-        statusText.innerHTML = `Copied<span class="palette-color-text" style="--color: ${currentColor.hex}">
-        ${colorName}
-        </span>to clipboard! <i>(${copy})</i>`;
-    
-        
+
+        statusText.innerHTML = `Copied<span class="palette-color-text" style="--color: ${currentColor.hex}">${colorName}</span>to clipboard! <i>(${copy})</i>`;
+
+
         const paletteColorText = document.querySelector(".palette-color-text") as HTMLElement;
         if (!paletteColorText) return copy;
 
         const rgb = hexToRgb(currentColor.hex);
         if (!rgb) return copy;
-        
+
         const textColor = currentBackground === null ? (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255 > 0.5 ? "black" : "white" : currentColor.hex;
         paletteColorText.style.setProperty("--text-color", textColor);
 
