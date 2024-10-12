@@ -36,12 +36,67 @@
             {/each}
         {/each}
     </div>
+
+    <footer class="fixed bottom-0 bg-zinc-800 px-5 py-2 rounded-t-sm">
+        <p>Text Background</p>
+        <div class="flex gap-4">
+            <button
+                    id="bg-color"
+                    class="bg-cover bg-center w-12 h-12 text-sm rounded-md transition-all bg-zinc-500 hover:scale-105 hover:brightness-110 active:scale-90 mix-blend-difference"
+                    on:click={() => {changeImage(null)}}
+                >COLOR</button>
+            {#each IMAGES as image}
+                <button
+                    class="bg-cover bg-center w-12 h-12 rounded-md transition-all hover:scale-105 hover:brightness-110 active:scale-90"
+                    style="background-image: url({image})"
+                    on:click={() => {changeImage(image)}}
+                ></button>
+            {/each}
+        </div>
+    </footer>
 </DefaultPage>
 
 <script lang="ts">
     import DefaultPage from "../../components/DefaultPage.svelte";
     import * as RadioGroup from "$lib/components/ui/radio-group/index.js";
     import {Label} from "$lib/components/ui/label/";
+
+    class Color {
+        hex: string;
+        group: string;
+        shade: string;
+        override?: string;
+
+        constructor(hex: string, group: string, shade: number, override?: string) {
+            this.hex = hex;
+            this.group = group
+            this.shade = COLOR_SHADES[shade + 4];
+            if (override) this.override = override;
+        }
+    }
+    
+    const COLOR_NAMES = [
+        "RED", "SCARLET", "ORANGE", "GOLD", "MUSTARD", "YELLOW", "LIME", "GREEN", "TEAL", "AQUA", "SKY", "BLUE", "PURPLE", "AMETHYST", "MAGENTA", "PINK", "ROSE", "BROWN", "GRAY"
+    ]
+    const COLOR_SHADES = [
+        "DARK_4", "DARK_3", "DARK_2", "DARK", "NEUTRAL", "LIGHT", "LIGHT_2", "LIGHT_3"
+    ]
+
+    var currentColor: Color = new Color("#FFFFFF", "GRAY", 3, "WHITE");
+    var currentBackground: string | null = null;
+
+    const IMAGES = [
+        "/palette/bg_overworld.jpg",
+        "/palette/bg_night.avif",
+        "/palette/bg_nether.avif"
+    ]
+
+    function changeImage(image: string | null) {
+        const paletteColorText = document.querySelector(".palette-color-text") as HTMLElement;
+        if (!paletteColorText) return;
+        currentBackground = image;
+        updateDisplay();
+    }
 
     function getColorObj(color: string, shade: string) {
         return COLORS.find(c => c.group === color && c.shade === shade);
@@ -62,49 +117,42 @@
 
 
     function clickColor(color: Color) {
+        currentColor = color;
+        updateDisplay();
+    }
+
+    function updateDisplay() {
         const copyTag = document.getElementById("copyTag")?.ariaChecked == "true";
         const copyName = document.getElementById("copyName")?.ariaChecked == "true";
 
-        const colorName = color.override ? color.override : (color.group + '_' + color.shade).replace('_NEUTRAL', '');
+        const colorName = currentColor.override ? currentColor.override : (currentColor.group + '_' + currentColor.shade).replace('_NEUTRAL', '');
 
-        var copy = color.hex;
-        if (copyTag) copy = `<${color.hex}>`;
+        var copy = currentColor.hex;
+        if (copyTag) copy = `<${currentColor.hex}>`;
         if (copyName) copy = colorName;
 
+        
         navigator.clipboard.writeText(copy);
 
         const statusText = document.getElementById("palette-status");
         if (!statusText) return;
-        statusText.innerHTML = `Copied<span class="palette-color-text" style="--color: ${color.hex}">
-                                    ${colorName}
-                                </span>to clipboard! <i>(${copy})</i>`;
+        
+        statusText.innerHTML = `Copied<span class="palette-color-text" style="--color: ${currentColor.hex}">
+        ${colorName}
+        </span>to clipboard! <i>(${copy})</i>`;
+    
+        
+        const paletteColorText = document.querySelector(".palette-color-text") as HTMLElement;
+        if (!paletteColorText) return;
 
-        const paletteColorText = document.querySelector(".palette-color-text");
-        const rgb = hexToRgb(color.hex);
-
+        const rgb = hexToRgb(currentColor.hex);
         if (!rgb) return;
-        if (paletteColorText) paletteColorText.style.color = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255 > 0.5 ? "black" : "white";
-    }
+        
+        const textColor = currentBackground === null ? (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255 > 0.5 ? "black" : "white" : currentColor.hex;
+        paletteColorText.style.setProperty("--text-color", textColor);
 
-    const COLOR_NAMES = [
-        "RED", "SCARLET", "ORANGE", "GOLD", "MUSTARD", "YELLOW", "LIME", "GREEN", "TEAL", "AQUA", "SKY", "BLUE", "PURPLE", "AMETHYST", "MAGENTA", "PINK", "ROSE", "BROWN", "GRAY"
-    ]
-    const COLOR_SHADES = [
-        "DARK_4", "DARK_3", "DARK_2", "DARK", "NEUTRAL", "LIGHT", "LIGHT_2", "LIGHT_3"
-    ]
-
-    class Color {
-        hex: string;
-        group: string;
-        shade: string;
-        override?: string;
-
-        constructor(hex: string, group: string, shade: number, override?: string) {
-            this.hex = hex;
-            this.group = group
-            this.shade = COLOR_SHADES[shade + 4];
-            if (override) this.override = override;
-        }
+        const bg = currentBackground === null ? currentColor.hex : `url('${currentBackground}')`;
+        paletteColorText.style.setProperty("--color", bg);
     }
 
     // <editor-fold defaultstate="collapsed" desc="> Colors">
