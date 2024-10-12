@@ -92,6 +92,10 @@
     }
 }
 
+#sidebar-content > button {
+    @apply flex items-center justify-center bg-cover bg-center w-12 h-12 rounded-md transition-all hover:scale-105 hover:brightness-110 active:scale-90 bg-zinc-700;
+}
+
 .palette-color {
     @apply cursor-pointer transition-all md:hover:scale-125 active:scale-[120%] active:rounded-sm md:hover:rounded-md md:hover:shadow-black/35 md:hover:shadow-lg z-0 hover:z-50 w-full;
     background-color: var(--color);

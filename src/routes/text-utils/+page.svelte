@@ -6,6 +6,7 @@
     import DefaultPage from "../../components/DefaultPage.svelte";
 
     import { onMount } from "svelte";
+    import Toolbar from "../../components/Toolbar.svelte";
 
     //@ts-ignore
     var widthData;
@@ -52,34 +53,11 @@
             .join("");
     };
 
-    const centerText = async (str: string, width: number, useZWNJ: boolean) => {
-        const { chars, missingCharWidth } = await widthData;
-        const totalWidth = str.split("").reduce((acc, char) => {
-            if (chars[char]) {
-                return acc + chars[char].width;
-            } else {
-                return acc + missingCharWidth;
-            }
-        }, 0);
-
-    
-        const spaceWidth = 4;
-        const space = "<space:" + Math.floor((width - totalWidth) / spaceWidth / 2) + ">";
-        const zwnj = "<b>" + "‌".repeat(1 + (width - totalWidth) % spaceWidth) + "</b>";
-
-        console.log(space, zwnj);
-
-        return space + (useZWNJ ? zwnj : "") + str + space;
-    
-    };
-
     const generate = async () => {
         const input = document.getElementById("input") as HTMLInputElement;
         const makeSmall = document.getElementById(
             "make-small",
         ) as HTMLInputElement;
-        const center = document.getElementById("center") as HTMLInputElement;
-        const useZWNJ = document.getElementById("zwnj") as HTMLInputElement;
         const output = document.getElementById(
             "output",
         ) as HTMLParagraphElement;
@@ -88,10 +66,6 @@
 
         if (makeSmall.ariaChecked == "true") {
             text = makeSmallCaps(text);
-        }
-
-        if (center.ariaChecked == "true") {
-            text = await centerText(text, 160, useZWNJ.ariaChecked == "true");
         }
 
         output.innerText = text;
@@ -109,15 +83,13 @@
                 <Checkbox id="make-small" />
                 <Label for="make-small">Make Small Caps</Label>
             </div>
-            <div class="flex gap-2">
-                <Checkbox id="center" />
-                <Label for="center">Center for menu title</Label>
-            </div>
-            <div class="flex gap-2 hidden">
-                <Checkbox id="zwnj" />
-            </div>
         </div>
         <Button id="generate" on:click={generate}>Generate</Button>
         <p class="bg-zinc-800 px-2 rounded-sm" id="output"></p>
     </div>
+    <Toolbar>
+        <button on:click={() => navigator.clipboard.writeText("‌")}>
+            Copy ZWNJ
+        </button>
+    </Toolbar>
 </DefaultPage>
