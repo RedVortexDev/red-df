@@ -7,55 +7,55 @@
     <h1>Whoops! {$page.status === 404 ? "Looks like you took a wrong turn." : "Seems like something broke..."}</h1>
     <p>Use the navigation bar to get back on track.</p>
 
-    {#if $page.status === 404}
-
-        <div class="mt-8 flex">
-            <div class="cblock">
-                <div>
-                    <div class="air"></div>
-                    <div class="loader mat">
-                        <div class="sign">
-                            <span>LOADER</span>
-                            <span>LoadUnknownPage</span>
-                        </div>
+    <div class="mt-8 md:flex invisible md:visible">
+        <div class="cblock">
+            <div>
+                <div class="air"></div>
+                <div class="loader mat">
+                    <div class="sign">
+                        <span>LOADER</span>
+                        <span>LoadUnknownPage</span>
                     </div>
                 </div>
-            </div>
-            <div class="cblock">
-                <div class="stone"></div>
-            </div>
-            <div class="cblock">
-                <div>
-                    <div class="chest"></div>
-                    <div class="game_action mat">
-                        <div class="sign">
-                            <span>SET STATUS</span>
-                            <span>{($page.error?.message ?? "Unexpected Error").replace(" ", "").substring(0, 16)}</span>
-                            <span>{$page.status}</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="cblock">
-                <div class="stone"></div>
-            </div>
-            <div class="cblock">
-                <div>
-                    <div class="chest"></div>
-                    <div class="player_action mat">
-                        <div class="sign">
-                            <span>CLIENT ACTION</span>
-                            <span>ShowPage</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="cblock">
-                <div class="stone"></div>
             </div>
         </div>
+        <div class="cblock">
+            <div class="stone"></div>
+        </div>
+        <div class="cblock">
+            <div>
+                <div class="chest"></div>
+                <div class="game_action mat">
+                    <div class="sign">
+                        <span>SET STATUS</span>
+                        <span>{($page.error?.message ?? "Unexpected Error").replace(" ", "").substring(0, 16)}</span>
+                        <span>{$page.status}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cblock">
+            <div class="stone"></div>
+        </div>
+        <div class="cblock">
+            <div>
+                <div class="chest"></div>
+                <div class="player_action mat">
+                    <div class="sign">
+                        <span>CLIENT ACTION</span>
+                        <span>ShowPage</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cblock">
+            <div class="stone"></div>
+        </div>
+    </div>
 
-    {/if}
+    <footer class="fixed bottom-0 bg-zinc-800 rounded-t-sm px-2 py-1 md:visible invisible">
+        <p>Codeblock CSS heavily inspired by <a class="underline" href="https://dfonline.dev/">DFOnline</a></p>
+    </footer>
 </DefaultPage>
 
 <style>
