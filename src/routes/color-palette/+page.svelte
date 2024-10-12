@@ -37,29 +37,26 @@
         {/each}
     </div>
 
-    <footer class="fixed lg:left-0 mt-20 bg-zinc-800 lg:rounded-r-sm bottom-0 lg:top-0 lg:bottom-auto px-5 py-2 rounded-t-sm">
-        <p>Text Background</p>
-        <div class="flex gap-4">
+        <Toolbar title="Text Background">
             <button
                     id="bg-color"
-                    class="bg-cover bg-center w-12 h-12 text-sm rounded-md transition-all bg-zinc-500 hover:scale-105 hover:brightness-110 active:scale-90 mix-blend-difference"
+                    class="text-sm"
                     on:click={() => {changeImage(null)}}
                 >COLOR</button>
             {#each IMAGES as image}
                 <button
-                    class="bg-cover bg-center w-12 h-12 rounded-md transition-all hover:scale-105 hover:brightness-110 active:scale-90"
                     style="background-image: url({image})"
                     on:click={() => {changeImage(image)}}
                 ></button>
             {/each}
-        </div>
-    </footer>
+        </Toolbar>
 </DefaultPage>
 
 <script lang="ts">
     import DefaultPage from "../../components/DefaultPage.svelte";
     import * as RadioGroup from "$lib/components/ui/radio-group/index.js";
     import {Label} from "$lib/components/ui/label/";
+    import Toolbar from "../../components/Toolbar.svelte";
 
     class Color {
         hex: string;
@@ -118,10 +115,15 @@
 
     function clickColor(color: Color) {
         currentColor = color;
-        updateDisplay();
+        const copy = updateDisplay();
+        if (copy) navigator.clipboard.writeText(copy);
     }
 
-    function updateDisplay() {
+    /**
+     * Updates the display with the current color and background.
+     * @returns The text the user wants to copy, but does not copy it.
+     */
+    function updateDisplay(): string {
         const copyTag = document.getElementById("copyTag")?.ariaChecked == "true";
         const copyName = document.getElementById("copyName")?.ariaChecked == "true";
 
@@ -130,12 +132,9 @@
         var copy = currentColor.hex;
         if (copyTag) copy = `<${currentColor.hex}>`;
         if (copyName) copy = colorName;
-
-        
-        navigator.clipboard.writeText(copy);
-
+    
         const statusText = document.getElementById("palette-status");
-        if (!statusText) return;
+        if (!statusText) return copy;
         
         statusText.innerHTML = `Copied<span class="palette-color-text" style="--color: ${currentColor.hex}">
         ${colorName}
@@ -143,16 +142,17 @@
     
         
         const paletteColorText = document.querySelector(".palette-color-text") as HTMLElement;
-        if (!paletteColorText) return;
+        if (!paletteColorText) return copy;
 
         const rgb = hexToRgb(currentColor.hex);
-        if (!rgb) return;
+        if (!rgb) return copy;
         
         const textColor = currentBackground === null ? (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255 > 0.5 ? "black" : "white" : currentColor.hex;
         paletteColorText.style.setProperty("--text-color", textColor);
 
         const bg = currentBackground === null ? currentColor.hex : `url('${currentBackground}')`;
         paletteColorText.style.setProperty("--color", bg);
+        return copy;
     }
 
     // <editor-fold defaultstate="collapsed" desc="> Colors">
