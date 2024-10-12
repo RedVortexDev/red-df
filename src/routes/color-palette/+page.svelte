@@ -54,6 +54,7 @@
 
 <script lang="ts">
     import DefaultPage from "../../components/DefaultPage.svelte";
+    import * as RadioGroup from "$lib/components/ui/radio-group/index.js";
     import {Label} from "$lib/components/ui/label/";
     import Toolbar from "../../components/Toolbar.svelte";
 
