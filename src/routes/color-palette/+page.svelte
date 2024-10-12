@@ -37,7 +37,7 @@
         {/each}
     </div>
 
-    <footer class="fixed bottom-0 bg-zinc-800 px-5 py-2 rounded-t-sm">
+    <footer class="fixed lg:left-0 mt-20 bg-zinc-800 lg:rounded-r-sm bottom-0 lg:top-0 lg:bottom-auto px-5 py-2 rounded-t-sm">
         <p>Text Background</p>
         <div class="flex gap-4">
             <button

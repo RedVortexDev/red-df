@@ -101,7 +101,7 @@
 .palette-container {
     grid-template-columns: repeat(19, 1fr);
     grid-template-rows: repeat(8, 1fr);
-    @apply  rounded-s grid w-3/4 m-auto grid-flow-row md:grid-flow-col;
+    @apply rounded-s grid md:w-3/4 w-full m-auto grid-flow-row md:grid-flow-col md:rotate-0 rotate-90 -scale-y-100 md:scale-y-100 mt-[30%] md:mt-0;
 }
 
 .palette-color-text {

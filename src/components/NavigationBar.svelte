@@ -18,7 +18,7 @@
             RedVortex_
         </a>
     </div>
-    <button class="md:hidden ml-auto fill-white" on:click={
+    <button class="lg:hidden ml-auto fill-white" on:click={
         () => {
             const nav = document.getElementById('nav-links');
             if (nav) nav.classList.toggle('hidden');
@@ -29,11 +29,11 @@
             <path d="M3.75 9h16.5m-16.5 6.75h16.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
     </button>
-    <div class="md:inline-flex hidden flex flex-col md:flex-row justify-end md:gap-8 gap-5 w-fit md:w-full m-2"
+    <div class="lg:inline-flex hidden flex flex-col lg:flex-row justify-end lg:gap-0 gap-3 w-fit lg:w-full m-2"
          id="nav-links">
         {#each navItems as item}
             <a href={item.href}
-               class="whitespace-nowrap mr-4 transition-all px-3 py-1 text-xl md:text-lg cursor-pointer hover:underline {selectedItem === item.name ? 'text-theme font-medium' : ''}">
+               class="whitespace-nowrap mr-4 transition-all px-3 py-1 text-xl lg:text-lg cursor-pointer hover:underline {selectedItem === item.name ? 'text-theme font-medium' : ''}">
                 <div class="flex items-center">
                     > {item.name}
                     <span class="blinker {selectedItem === item.name ? 'blinker-visible' : ''}"></span>

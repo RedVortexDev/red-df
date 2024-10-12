@@ -40,10 +40,11 @@
     <br>
     <p class="text-center" id="resultText"></p>
     <br>
-    <p class="text-sm flex gap-2 items-center">
+    <!-- Let's assume people have already updated. -->
+    <!-- <p class="text-sm flex gap-2 items-center">
         <TriangleAlert/>
         If you're not using the latest CodeClient version, run <code>/auth</code> right now!
-    </p>
+    </p> -->
 </DefaultPage>
 
 <script lang="ts">
