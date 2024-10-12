@@ -54,7 +54,6 @@
 
 <script lang="ts">
     import DefaultPage from "../../components/DefaultPage.svelte";
-    import * as RadioGroup from "$lib/components/ui/radio-group/index.js";
     import {Label} from "$lib/components/ui/label/";
     import Toolbar from "../../components/Toolbar.svelte";
 
@@ -84,6 +83,8 @@
 
     const IMAGES = [
         "/palette/bg_overworld.jpg",
+        "/palette/bg_chat.png",
+        "/palette/bg_book.png",
         "/palette/bg_night.avif",
         "/palette/bg_nether.avif"
     ]

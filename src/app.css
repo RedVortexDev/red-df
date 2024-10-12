@@ -112,5 +112,5 @@
     background: var(--color);
     color: var(--text-color);
     font-family: 'minecraft', 'Space Grotesk Variable', 'monospace';
-    @apply p-1 rounded-md font-medium mx-2 bg-cover transition-all border-zinc-700 border-2 bg-bottom hover:p-5;
+    @apply p-1 rounded-md font-medium mx-2 bg-cover transition-all border-zinc-700 border-2 bg-bottom hover:p-5 z-10 relative;
 }
