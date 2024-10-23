@@ -181,17 +181,17 @@
         }
 
         let placedCreateList = false;
-        let items: Item[] = [
+        let items = [
             {
                 item: {
                     id: "var",
                     data: {
                         name: VARIABLE_NAME,
-                        scope: VARIABLE_SCOPE
-                    }
+                        scope: VARIABLE_SCOPE,
+                    },
                 },
-                slot: 0
-            }
+                slot: 0,
+            },
         ];
         let slot = 0;
 
