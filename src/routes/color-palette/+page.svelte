@@ -24,6 +24,7 @@
     export const IMAGES = [
         "/palette/bg_overworld.jpg",
         "/palette/bg_chat.png",
+        "/palette/bg_lore.png",
         "/palette/bg_book.png",
         "/palette/bg_night.avif",
         "/palette/bg_nether.avif"
