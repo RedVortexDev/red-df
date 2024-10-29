@@ -24,10 +24,10 @@
                             class="palette-color"
                             role="button"
                             tabindex="0"
-                            on:click={() => {clickColor(getColorObj(color, shade))}}
-                            on:keydown={() => {clickColor(getColorObj(color, shade))}}
+                            on:click={() => {const colorObj = getColorObj(color, shade); if (colorObj) clickColor(colorObj)}}
+                            on:keydown={() => {const colorObj = getColorObj(color, shade); if (colorObj) clickColor(colorObj)}}
                             style="
-                        --color: {getColorObj(color, shade).hex};
+                        --color: {getColorObj(color, shade)?.hex};
                         grid-row: {getGridPosition(shade, 'row')};
                         grid-column: {getGridPosition(color, 'column')};
                         "
@@ -46,18 +46,34 @@
         </button>
         {#each IMAGES as image}
             <button
+                    aria-label="Change background image"
                     style="background-image: url({image})"
                     on:click={() => {changeImage(image)}}
             ></button>
         {/each}
     </Toolbar>
+
+    <div class="absolute bottom-0 left-0 p-2 bg-zinc-800 transition-all hover:rounded-r-3xl hover:pr-5 active:pr-2 py-2 active:py-1 rounded-r-sm invisible md:visible">
+        <Popover.Root>
+            <Popover.Trigger>Custom Palette</Popover.Trigger>
+            <Popover.Content>
+                <div class="flex flex-col gap-2 p-2">
+                    <Input type="file" id="custom-palette-json" accept=".json" multiple={false} />
+                    <Button type="submit" on:click={() => customPalette()}>Confirm</Button>
+                </div>
+            </Popover.Content>
+        </Popover.Root>
+    </div>
 </DefaultPage>
 
 <script lang="ts">
     import DefaultPage from "../../components/DefaultPage.svelte";
     import * as RadioGroup from "$lib/components/ui/radio-group/index.js";
     import {Label} from "$lib/components/ui/label/";
+    import * as Popover from "$lib/components/ui/popover";
     import Toolbar from "../../components/Toolbar.svelte";
+    import { Input } from "$lib/components/ui/input/index.js";
+    import { Button } from "$lib/components/ui/button";
 
     class Color {
         hex: string;
@@ -156,7 +172,6 @@
         return copy;
     }
 
-    // <editor-fold defaultstate="collapsed" desc="> Colors">
     const COLORS = [
         new Color("#550000", "RED", -2),
         new Color("#AA0000", "RED", -1),
@@ -252,5 +267,10 @@
         new Color("#D4D4D4", "GRAY", 2),
         new Color("#FFFFFF", "GRAY", 3, "WHITE"),
     ]
-    // </editor-fold>
+
+
+
+    function customPalette(): void {
+        throw new Error("Function not implemented.");
+    }
 </script>

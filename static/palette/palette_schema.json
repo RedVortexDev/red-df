@@ -1,0 +1,59 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Color Palette Schema",
+    "description": "Schema for making a custom color palette to use in the Red DF website.",
+    "type": "object",
+
+    "properties": {
+        "color": {
+            "description": "A color object containing different shades.",
+            "type": "object",
+            "-4": {
+                "description": "4th dark shade of the color. (DARK_4)",
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "-3": {
+                "description": "3rd dark shade of the color. (DARK_3)",
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "-2": {
+                "description": "2nd dark shade of the color. (DARK_2)",
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "-1": {
+                "description": "1st dark shade of the color. (DARK_1)",
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "0": {
+                "description": "Base color. (NEUTRAL)",
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "1": {
+                "description": "1st light shade of the color. (LIGHT_1)",
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "2": {
+                "description": "2nd light shade of the color. (LIGHT_2)",
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "3": {
+                "description": "3rd light shade of the color. (LIGHT_3)",
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+            },
+            "4": {
+                "description": "4th light shade of the color. (LIGHT_4)",
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$"
+            }
+        }
+    },
+    "required": ["color"]
+}
