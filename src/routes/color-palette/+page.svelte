@@ -65,7 +65,7 @@
             colors = [];
             const json = get(preferences) as unknown as ColorPaletteSchema;
             // Get color names from custom palette
-            colorNames = Object.keys(json.customPalette);
+            colorNames = Object.keys(json.customPalette).filter(name => name !== "$schema");
             
             for (const groupName of colorNames) {
                 const colorGroup = json.customPalette[groupName];
