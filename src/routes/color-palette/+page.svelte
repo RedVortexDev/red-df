@@ -6,6 +6,7 @@
     import Toolbar from "../../components/Toolbar.svelte";
     import { Input } from "$lib/components/ui/input";
     import { Button } from "$lib/components/ui/button";
+    import { toast } from "svelte-sonner";
     import { get } from 'svelte/store';
     import { preferences } from './stores';
     import type { ColorPaletteSchema } from './palette_schema';
@@ -207,6 +208,10 @@
         currentColor = color;
         const copyText = updateDisplay();
         navigator.clipboard.writeText(copyText);
+        toast.success("Copied to clipboard!", {
+            description: `Copied ${copyText} to clipboard!`,
+            duration: 1000
+        });
     }
     
     function changeImage(image: string | null): void {
