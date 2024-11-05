@@ -38,8 +38,6 @@
     <br>
     <Button id="send-template" on:click={() => {parseTemplate()}}>Send Template</Button>
     <br>
-    <p class="text-center" id="resultText"></p>
-    <br>
     <!-- Let's assume people have already updated. -->
     <!-- <p class="text-sm flex gap-2 items-center">
         <TriangleAlert/>
@@ -53,6 +51,8 @@
     import {Label} from "$lib/components/ui/label/";
     import {Button} from "$lib/components/ui/button/";
     import {Switch} from "$lib/components/ui/switch/";
+    import { toast } from "svelte-sonner";
+
     //@ts-ignore
     import * as Select from "$lib/components/ui/select/";
     //@ts-ignore
@@ -120,7 +120,10 @@
         }
         const VARIABLE_SCOPE = USE_PARAMETER ? "line" : SCOPES[document.querySelector<HTMLDivElement>('#variable-scope')!.children[0].innerHTML] ?? "unsaved";
 
-        if (!FILE_PICKER || !FILE_PICKER.files || FILE_PICKER.files.length !== 1) return;
+        if (!FILE_PICKER || !FILE_PICKER.files || FILE_PICKER.files.length !== 1) {
+            toast.error("Please select a file!");
+            return;
+        }
 
         const file = FILE_PICKER.files[0];
         const text = await file.text();
@@ -227,21 +230,29 @@
             }
         }
 
-        if (recodeSocketOpen) recodeSocket.send(JSON.stringify({
-            type: "template",
-            data: JSON.stringify({
-                author: "Red DF Website",
-                name: "Text File to Template",
-                code: encodeTemplate(JSON.stringify(template)).toString()
-            }),
-            source: "Red DF Website"
-        }));
+        let sentTo;
+        if (recodeSocketOpen) {
+            recodeSocket.send(JSON.stringify({
+                type: "template",
+                data: JSON.stringify({
+                    author: "Red DF Website",
+                    name: "Text File to Template",
+                    code: encodeTemplate(JSON.stringify(template)).toString()
+                }),
+                source: "Red DF Website"
+            }));
+            sentTo = "recode";
+        }
 
-        if (codeClientSocketOpen) codeClientSocket.send(
-            `give {Count:1b,Slot:0b,id:"minecraft:ender_chest",tag:{display: {Name: '{"text":"Text File To Template","color":"aqua","italic":false}'}, PublicBukkitValues:{"hypercube:codetemplatedata": '{"author":"Red DF Website","name":"Text File to Template","code":"${encodeTemplate(JSON.stringify(template))}"}'}}}`
-        );
+        if (codeClientSocketOpen) {
+            codeClientSocket.send(
+                `give {Count:1b,Slot:0b,id:"minecraft:ender_chest",tag:{display: {Name: '{"text":"Text File To Template","color":"aqua","italic":false}'}, PublicBukkitValues:{"hypercube:codetemplatedata": '{"author":"Red DF Website","name":"Text File to Template","code":"${encodeTemplate(JSON.stringify(template))}"}'}}}`
+            );
+            sentTo = "CodeClient";
+        }
 
-        document.querySelector<HTMLDivElement>('#resultText')!.innerText = "Template sent to recode and CodeClient!";
+        if (!recodeSocketOpen && !codeClientSocketOpen) toast.error("Couldn't send to recode nor CodeClient!");
+        else toast.success(`Template sent to ${sentTo}!`);
     }
 
 </script>

@@ -4,6 +4,7 @@
     import Input from "$lib/components/ui/input/input.svelte";
     import {Label} from "$lib/components/ui/label";
     import DefaultPage from "../../components/DefaultPage.svelte";
+    import { toast } from "svelte-sonner";
 
     import {onMount} from "svelte";
     import Toolbar from "../../components/Toolbar.svelte";
@@ -88,7 +89,7 @@
         <p class="bg-zinc-800 px-2 rounded-sm" id="output"></p>
     </div>
     <Toolbar>
-        <button on:click={() => navigator.clipboard.writeText("‌")}>
+        <button on:click={() => { navigator.clipboard.writeText("‌"); toast.success("Copied to clipboard!", { description: "Copied a zero-width non-joined to clipboard." }) }}>
             Copy ZWNJ
         </button>
     </Toolbar>

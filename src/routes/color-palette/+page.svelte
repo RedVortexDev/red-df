@@ -7,6 +7,7 @@
     import { Input } from "$lib/components/ui/input";
     import { Button } from "$lib/components/ui/button";
     import { toast } from "svelte-sonner";
+    import * as Tooltip from "$lib/components/ui/tooltip";
     import { get } from 'svelte/store';
     import { preferences } from './stores';
     import type { ColorPaletteSchema } from './palette_schema';
@@ -22,14 +23,14 @@
         "ROSE", "BROWN", "GRAY"
     ] as const;
     
-    export const IMAGES = [
-        "/palette/bg_overworld.jpg",
-        "/palette/bg_chat.png",
-        "/palette/bg_lore.png",
-        "/palette/bg_book.png",
-        "/palette/bg_night.avif",
-        "/palette/bg_nether.avif"
-    ] as const;
+    export const IMAGES = {
+        "/palette/bg_overworld.jpg": "Overworld",
+        "/palette/bg_chat.png": "Chat",
+        "/palette/bg_lore.png": "Lore",
+        "/palette/bg_book.png": "Book",
+        "/palette/bg_night.avif": "Night",
+        "/palette/bg_nether.avif": "Nether"
+    }
     
     // Types
     type ColorShade = typeof COLOR_SHADES[number];
@@ -209,7 +210,7 @@
         const copyText = updateDisplay();
         navigator.clipboard.writeText(copyText);
         toast.success("Copied to clipboard!", {
-            description: `Copied ${copyText} to clipboard!`,
+            description: `Copied ${copyText} to clipboard.`,
             duration: 1000
         });
     }
@@ -339,12 +340,20 @@
         >
             COLOR
         </button>
-        {#each IMAGES as image}
-            <button
-                aria-label="Change background image"
-                style="background-image: url({image})"
-                on:click={() => changeImage(image)}
-            ></button>
+        {#each Object.entries(IMAGES) as [image, description]}
+            <Tooltip.Root>
+                <Tooltip.Trigger asChild let:builder>
+                    <Button
+                        builders={[builder]}
+                        aria-label="Change background image"
+                        style="background-image: url({image})"
+                        on:click={() => changeImage(image)}
+                    ></Button>
+                </Tooltip.Trigger>
+                <Tooltip.Content>
+                    <p>{description}</p>
+                </Tooltip.Content>
+            </Tooltip.Root>
         {/each}
     </Toolbar>
 
