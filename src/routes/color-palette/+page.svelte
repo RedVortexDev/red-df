@@ -61,30 +61,80 @@
     let colors: Color[] = [];
     let colorNames: string[] = [];
     
-    // Initialize colors from preferences
-    $: {
-        if (get(preferences).customPalette) {
-            colors = [];
-            const json = get(preferences) as unknown as ColorPaletteSchema;
-            // Get color names from custom palette
-            colorNames = Object.keys(json.customPalette).filter(name => name !== "$schema");
-            
-            for (const groupName of colorNames) {
-                const colorGroup = json.customPalette[groupName];
-                if (!colorGroup) continue;
-                
-                for (const [shadeName, shade] of Object.entries(colorGroup)) {
-                    if (COLOR_SHADES.includes(shadeName as ColorShade)) {
-                        colors.push(new Color(
-                            shade.hex,
-                            groupName,
-                            shadeName as ColorShade,
-                            shade.override
-                        ));
-                    }
-                }
+
+    function jsonSyntaxToast(message: string) {
+        console.log("%cCustom Palette Error:\n", "color: red; font-weight: bold;", message + "\n\nReference the schema:\n" + window.location.origin + "/palette/palette_schema.json");
+        toast.error(message, {
+            description: `Reference the schema: ${window.location.origin}/palette/palette_schema.json`,
+            duration: 3000
+        });
+    }
+
+    function parseCustomPalette(): [Color[], string[]] | undefined {
+        let colors = []
+        const json = get(preferences) as unknown as ColorPaletteSchema;
+
+        // Validate custom palette
+        if (!json.customPalette || typeof json.customPalette !== 'object') {
+            jsonSyntaxToast("Invalid custom palette format!");
+            return;
+        }
+
+        // Get color names from custom palette
+        colorNames = Object.keys(json.customPalette).filter(name => name !== "$schema");
+        if (colorNames.length === 0) {
+            jsonSyntaxToast("Custom palette has no color groups!");
+            return;
+        }
+
+        for (const groupName of colorNames) {
+            const colorGroup = json.customPalette[groupName];
+            if (!colorGroup || typeof colorGroup !== 'object') {
+                jsonSyntaxToast(`Invalid color group format for ${groupName}!`);
+                return;
             }
-        } else {
+
+            if (Object.keys(colorGroup).length === 0) {
+                jsonSyntaxToast(`Color group ${groupName} has no shades!`);
+                return;
+            }
+
+            for (const [shadeName, shade] of Object.entries(colorGroup)) {
+                if (!COLOR_SHADES.includes(shadeName as ColorShade)) {
+                    jsonSyntaxToast(`Invalid shade name ${shadeName} in group ${groupName}!`);
+                    return;
+                }
+                if (!shade.hex || typeof shade.hex !== 'string') {
+                    jsonSyntaxToast(`Missing or invalid hex value for ${shadeName} in group ${groupName}!`);
+                    return;
+                }
+                colors.push(new Color(
+                    shade.hex,
+                    groupName.toUpperCase(),
+                    shadeName as ColorShade,
+                    shade.override
+                ));
+            }
+        }
+
+        colorNames = colorNames.map(name => name.toUpperCase());
+
+        console.log("%cCustom Palette:\n", "color: green; font-weight: bold;", colors);
+        return [colors, colorNames];
+    }
+
+    // Initialize colors from preferences
+    $: (() => {
+        let useDefaultPalette = true;
+        if (get(preferences).customPalette) {
+            let parsed = parseCustomPalette();
+            if (parsed !== undefined && parsed.length > 0) {
+                useDefaultPalette = false;
+                colors = parsed[0];
+                colorNames = parsed[1];
+            }
+        }
+        if (useDefaultPalette) {
             colorNames = [...DEFAULT_COLOR_NAMES];
             colors = [
                 new Color("#550000", "RED", "DARK_2"),
@@ -182,7 +232,7 @@
                 new Color("#FFFFFF", "GRAY", "LIGHT_3", "WHITE")
             ]
         }
-    }
+    })();
     
     // Utility functions
     function hexToRgb(hex: string): RGB | null {
@@ -226,7 +276,7 @@
         
         if (!file) return;
         if (file.type !== "application/json") {
-            alert("Invalid file type! Please upload a JSON file.");
+            toast.error("Invalid file type! Please upload a JSON file.");
             return;
         }
     
@@ -237,7 +287,7 @@
                 preferences.set({ customPalette: data });
                 window.location.reload();
             } catch (error) {
-                alert("Invalid JSON file format!");
+                jsonSyntaxToast("Invalid JSON file format!");
             }
         };
         reader.readAsText(file);
