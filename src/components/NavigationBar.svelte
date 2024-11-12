@@ -1,4 +1,6 @@
 <script lang="ts">
+    import GitHubButton from "./GitHubButton.svelte";
+
     export let selectedItem: string = "";
 
     const navItems = [
@@ -30,7 +32,7 @@
             <path d="M3.75 9h16.5m-16.5 6.75h16.5" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
     </button>
-    <div class="lg:inline-flex hidden flex flex-col lg:flex-row justify-end lg:gap-0 gap-3 w-fit lg:w-full m-2"
+    <div class="lg:inline-flex hidden flex flex-col lg:flex-row justify-end lg:items-center items-start  lg:gap-0 gap-3 w-fit lg:w-full m-2"
          id="nav-links">
         {#each navItems as item}
             <a href={item.href}
@@ -41,5 +43,6 @@
                 </div>
             </a>
         {/each}
+        <GitHubButton classes="order-first lg:order-last"/>
     </div>
 </nav>

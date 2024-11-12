@@ -1,9 +1,10 @@
 <script lang="ts">
-    import { Button } from "$lib/components/ui/button";
-    import { Input } from "$lib/components/ui/input";
-    import { toast } from "svelte-sonner";
+    import {Button} from "$lib/components/ui/button";
+    import {Input} from "$lib/components/ui/input";
+    import {toast} from "svelte-sonner";
     import DefaultPage from "../../components/DefaultPage.svelte";
-    import { onMount } from "svelte";
+    import {onMount} from "svelte";
+    import WarningCard from "../../components/WarningCard.svelte";
 
     // stuff with sending data & stuf
     let ws: WebSocket | undefined = undefined;
@@ -14,15 +15,16 @@
             console.log("Couldn't connect to CodeClient.");
             toast.error("Couldn't connect to CodeClient.");
         } finally {
-            if (ws === undefined) return;
-            ws.onopen = () => {
-                console.log("Connected to CodeClient.");
-                toast.success("Connected to CodeClient!");
-            };
+            if (ws !== undefined) {
+                ws.onopen = () => {
+                    console.log("Connected to CodeClient.");
+                    toast.success("Connected to CodeClient!");
+                };
 
-            ws.onmessage = (event) => {
-                console.log("got a message: " + event.data);
-            };
+                ws.onmessage = (event) => {
+                    console.log("got a message: " + event.data);
+                };
+            }
         }
     });
 
@@ -47,11 +49,13 @@
         }
         return biArray;
     }
+
     function readShort() {
         let byte1 = fileArray.shift() ?? 0;
         let byte2 = fileArray.shift() ?? 0;
         return byte1 + (byte2 << 8);
     }
+
     function readInt() {
         let byte1 = fileArray.shift() ?? 0;
         let byte2 = fileArray.shift() ?? 0;
@@ -59,6 +63,7 @@
         let byte4 = fileArray.shift() ?? 0;
         return byte1 + (byte2 << 8) + (byte3 << 16) + (byte4 << 24);
     }
+
     function readString() {
         let length = readInt();
         let string = "";
@@ -71,6 +76,7 @@
         }
         return string;
     }
+
     function getMinecraftPitch(key: number, offset: number) {
         if (key < 33) key -= 9;
         else if (key > 57) key -= 57;
@@ -78,10 +84,9 @@
 
         key += offset;
 
-        let finalValue = 0.5 * Math.pow(2, key / 12) * 1000;
-
-        return finalValue;
+        return 0.5 * Math.pow(2, key / 12) * 1000;
     }
+
     function receivedNbs() {
         let nbsElement = document.getElementById("nbs") as HTMLInputElement;
         if (nbsElement.files === null || nbsElement.files.length === 0 || nbsElement.files[0] === null) {
@@ -563,18 +568,15 @@
 <DefaultPage pageName="NBS Importer" subtitle="Import NBS files to DiamondFire">
     <div class="flex flex-col gap-6">
         <div class="flex gap-5">
-            <Input type="file" id="nbs" accept=".nbs" multiple={false} />
-            <Button
-                on:click={() => {
-                    receivedNbs();
-                }}>Send</Button
-            >
+            <Input accept=".nbs" id="nbs" multiple={false} type="file"/>
+            <Button on:click={() => {receivedNbs();}}>
+                Send
+            </Button>
         </div>
-        <Button
-            on:click={() => {
-                giveNbsPlayer();
-            }}
-            variant="secondary">Send Note Block Player</Button
-        >
+        <Button on:click={() => {giveNbsPlayer(); }} variant="secondary">
+            Send Note Block Player
+        </Button>
     </div>
+    <WarningCard message="This page processes your NBS file locally. Your data is not sent to any server."
+                 title="Local Processing"/>
 </DefaultPage>

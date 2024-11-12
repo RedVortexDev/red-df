@@ -55,10 +55,6 @@
         @apply pointer-events-none select-none;
     }
 
-    h1 {
-        @apply text-xl md:text-2xl;
-    }
-
     p {
         @apply text-sm md:text-base;
     }

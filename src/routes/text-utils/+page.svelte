@@ -4,13 +4,14 @@
     import Input from "$lib/components/ui/input/input.svelte";
     import {Label} from "$lib/components/ui/label";
     import DefaultPage from "../../components/DefaultPage.svelte";
-    import { toast } from "svelte-sonner";
+    import {toast} from "svelte-sonner";
 
     import {onMount} from "svelte";
     import Toolbar from "../../components/Toolbar.svelte";
+    import InfoCard from "../../components/InfoCard.svelte";
 
     //@ts-ignore
-    var widthData;
+    let widthData;
     onMount(async () => {
         widthData = await fetch("/minecraft_default.json").then((res) =>
             res.json()
@@ -93,4 +94,6 @@
             Copy ZWNJ
         </button>
     </Toolbar>
+
+    <InfoCard title="Have more ideas for text utilities?" message="Feel free to make an issue on the GitHub repository! (in the navigation bar)"/>
 </DefaultPage>

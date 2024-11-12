@@ -4,7 +4,7 @@
         <Input class="hover:cursor-pointer" id="file-input" type="file"/>
     </div>
     <br>
-    <div class="flex gap-5 items-center flex-col md:flex-row">
+    <div class="flex gap-5 lg:items-center flex-col md:flex-row">
         <div>
             <Input id="function-name" placeholder="Function name"/>
         </div>
@@ -51,14 +51,13 @@
     import {Label} from "$lib/components/ui/label/";
     import {Button} from "$lib/components/ui/button/";
     import {Switch} from "$lib/components/ui/switch/";
-    import { toast } from "svelte-sonner";
+    import {toast} from "svelte-sonner";
 
     //@ts-ignore
     import * as Select from "$lib/components/ui/select/";
     //@ts-ignore
     import * as Tooltip from "$lib/components/ui/tooltip";
     //import {TriangleAlert} from "lucide-svelte";
-
     import pako from "pako";
     import {onMount} from "svelte";
 
