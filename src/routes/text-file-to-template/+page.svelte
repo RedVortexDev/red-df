@@ -246,7 +246,7 @@
 
         if (codeClientSocketOpen) {
             codeClientSocket.send(
-                `give {Count:1b,Slot:0b,id:"minecraft:ender_chest",tag:{display: {Name: '{"text":"Text File To Template","color":"aqua","italic":false}'}, PublicBukkitValues:{"hypercube:codetemplatedata": '{"author":"Red DF Website","name":"Text File to Template","code":"${encodeTemplate(JSON.stringify(template))}"}'}}}`
+                `give {components:{"minecraft:custom_data":{PublicBukkitValues:{"hypercube:codetemplatedata":'{"author":"Red DF Website","name":"&bText File to Template","version":1,"code":"${encodeTemplate(JSON.stringify(template))}"}'}},"minecraft:custom_name":'{"extra":[{"color":"aqua","text":"Text File to Template"}],"italic":false,"text":""}'},count:1,id:"minecraft:ender_chest"}`
             );
             sentTo = "CodeClient";
         }
