@@ -1,28 +1,31 @@
 <script lang="ts">
     import DefaultPage from "../../components/DefaultPage.svelte";
-    import * as RadioGroup from "$lib/components/ui/radio-group";
-    import { Label } from "$lib/components/ui/label";
-    import * as Popover from "$lib/components/ui/popover";
+    import {Label} from "$lib/components/ui/label";
     import Toolbar from "../../components/Toolbar.svelte";
-    import { Input } from "$lib/components/ui/input";
-    import { Button } from "$lib/components/ui/button";
-    import { toast } from "svelte-sonner";
+    import {Input} from "$lib/components/ui/input";
+    import {Button} from "$lib/components/ui/button";
+    import {toast} from "svelte-sonner";
+    //@ts-ignore
     import * as Tooltip from "$lib/components/ui/tooltip";
-    import { get } from 'svelte/store';
-    import { preferences } from './stores';
-    import type { ColorPaletteSchema } from './palette_schema';
-    
+    //@ts-ignore
+    import * as Popover from "$lib/components/ui/popover";
+    //@ts-ignore
+    import * as RadioGroup from "$lib/components/ui/radio-group";
+    import {get} from 'svelte/store';
+    import {preferences} from './stores';
+    import type {ColorPaletteSchema} from './palette_schema';
+
     // Constants
     export const COLOR_SHADES = [
         "DARK_4", "DARK_3", "DARK_2", "DARK", "NEUTRAL", "LIGHT", "LIGHT_2", "LIGHT_3", "LIGHT_4"
     ] as const;
-    
+
     export const DEFAULT_COLOR_NAMES = [
-        "RED", "SCARLET", "ORANGE", "GOLD", "MUSTARD", "YELLOW", "LIME", "GREEN", 
-        "TEAL", "AQUA", "SKY", "BLUE", "PURPLE", "AMETHYST", "MAGENTA", "PINK", 
+        "RED", "SCARLET", "ORANGE", "GOLD", "MUSTARD", "YELLOW", "LIME", "GREEN",
+        "TEAL", "AQUA", "SKY", "BLUE", "PURPLE", "AMETHYST", "MAGENTA", "PINK",
         "ROSE", "BROWN", "GRAY"
     ] as const;
-    
+
     export const IMAGES = {
         "/palette/bg_overworld.jpg": "Overworld",
         "/palette/bg_chat.png": "Chat",
@@ -31,25 +34,25 @@
         "/palette/bg_night.avif": "Night",
         "/palette/bg_nether.avif": "Nether"
     }
-    
+
     // Types
     type ColorShade = typeof COLOR_SHADES[number];
     type DefaultColorName = typeof DEFAULT_COLOR_NAMES[number];
     type RGB = { r: number; g: number; b: number };
-    
+
     class Color {
         readonly hex: string;
         readonly group: string;
         readonly shade: ColorShade;
         readonly override?: string;
-    
+
         constructor(hex: string, group: string, shade: ColorShade, override?: string) {
             this.hex = hex;
             this.group = group;
             this.shade = shade;
             this.override = override;
         }
-    
+
         get displayName(): string {
             return this.override || `${this.group}_${this.shade}`.replace('_NEUTRAL', '');
         }
@@ -60,7 +63,7 @@
     let currentBackground: string | null = null;
     let colors: Color[] = [];
     let colorNames: string[] = [];
-    
+
 
     function jsonSyntaxToast(message: string) {
         console.log("%cCustom Palette Error:\n", "color: red; font-weight: bold;", message + "\n\nReference the schema:\n" + window.location.origin + "/palette/palette_schema.json");
@@ -233,7 +236,7 @@
             ]
         }
     })();
-    
+
     // Utility functions
     function hexToRgb(hex: string): RGB | null {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -243,17 +246,17 @@
             b: parseInt(result[3], 16)
         } : null;
     }
-    
+
     function getColorObj(color: string, shade: string): Color | undefined {
         return colors.find(c => c.group === color && c.shade === shade);
     }
-    
+
     function getGridPosition(shade: string, type: string): number {
-        return type === 'row' ? 
-            COLOR_SHADES.indexOf(shade as ColorShade) + 1 : 
+        return type === 'row' ?
+            COLOR_SHADES.indexOf(shade as ColorShade) + 1 :
             colorNames.indexOf(shade) + 1;
     }
-    
+
     // Event handlers
     function clickColor(color: Color): void {
         currentColor = color;
@@ -264,27 +267,27 @@
             duration: 1000
         });
     }
-    
+
     function changeImage(image: string | null): void {
         currentBackground = image;
         updateDisplay();
     }
-    
+
     function customPalette(): void {
         const fileInput = document.getElementById("custom-palette-json") as HTMLInputElement;
         const file = fileInput.files?.[0];
-        
+
         if (!file) return;
         if (file.type !== "application/json") {
             toast.error("Invalid file type! Please upload a JSON file.");
             return;
         }
-    
+
         const reader = new FileReader();
         reader.onload = () => {
             try {
                 const data = JSON.parse(reader.result as string);
-                preferences.set({ customPalette: data });
+                preferences.set({customPalette: data});
                 window.location.reload();
             } catch (error) {
                 jsonSyntaxToast("Invalid JSON file format!");
@@ -292,63 +295,63 @@
         };
         reader.readAsText(file);
     }
-    
+
     function deleteCustomPalette(): void {
         preferences.reset();
         window.location.reload();
     }
-    
+
     function updateDisplay(): string {
         const copyTag = document.getElementById("copyTag")?.ariaChecked === "true";
         const copyName = document.getElementById("copyName")?.ariaChecked === "true";
-    
+
         const displayName = currentColor.displayName;
-    
+
         const copyText = copyTag ? `<${currentColor.hex}>` :
-                        copyName ? displayName :
-                        currentColor.hex;
-    
+            copyName ? displayName :
+                currentColor.hex;
+
         const statusText = document.getElementById("palette-status");
         if (statusText) {
             statusText.innerHTML = `Copied <span class="palette-color-text" style="--color: ${currentColor.hex}">${displayName}</span> to clipboard! <i>(${copyText})</i>`;
         }
-    
+
         const colorText = document.querySelector(".palette-color-text") as HTMLElement;
         if (colorText) {
             const rgb = hexToRgb(currentColor.hex);
             if (rgb) {
                 const brightness = (0.299 * rgb.r + 0.587 * rgb.g + 0.114 * rgb.b) / 255;
-                const textColor = currentBackground === null ? 
-                    (brightness > 0.5 ? "black" : "white") : 
+                const textColor = currentBackground === null ?
+                    (brightness > 0.5 ? "black" : "white") :
                     currentColor.hex;
-    
+
                 colorText.style.setProperty("--text-color", textColor);
-                colorText.style.setProperty("--color", 
-                    currentBackground === null ? 
-                    currentColor.hex : 
-                    `url('${currentBackground}')`
+                colorText.style.setProperty("--color",
+                    currentBackground === null ?
+                        currentColor.hex :
+                        `url('${currentBackground}')`
                 );
             }
         }
-    
+
         return copyText;
     }
 </script>
 
 <DefaultPage pageName="Color Palette" subtitle="Updated DiamondFire Color Palette">
     <h1 id="palette-status">Click on a color to copy it!</h1>
-    
+
     <RadioGroup.Root class="flex gap-4">
         <div class="flex items-center space-x-2">
-            <RadioGroup.Item id="copyHex" value="copyHex" />
+            <RadioGroup.Item id="copyHex" value="copyHex"/>
             <Label for="copyHex">Copy Hex</Label>
         </div>
         <div class="flex items-center space-x-2">
-            <RadioGroup.Item id="copyTag" value="copyTag" />
+            <RadioGroup.Item id="copyTag" value="copyTag"/>
             <Label for="copyTag">Copy MiniMessage Tag</Label>
         </div>
         <div class="flex items-center space-x-2">
-            <RadioGroup.Item id="copyName" value="copyName" />
+            <RadioGroup.Item id="copyName" value="copyName"/>
             <Label for="copyName">Copy Color Name</Label>
         </div>
     </RadioGroup.Root>
@@ -358,20 +361,20 @@
             {#each COLOR_SHADES as shade}
                 {#if getColorObj(color, shade)}
                     <div
-                        class="palette-color"
-                        role="button"
-                        tabindex="0"
-                        on:click={() => {
+                            class="palette-color"
+                            role="button"
+                            tabindex="0"
+                            on:click={() => {
                             const colorObj = getColorObj(color, shade);
                             if (colorObj) clickColor(colorObj);
                         }}
-                        on:keydown={(e) => {
+                            on:keydown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
                                 const colorObj = getColorObj(color, shade);
                                 if (colorObj) clickColor(colorObj);
                             }
                         }}
-                        style="
+                            style="
                             --color: {getColorObj(color, shade)?.hex};
                             grid-row: {getGridPosition(shade, 'row')};
                             grid-column: {getGridPosition(color, 'column')};
@@ -384,9 +387,9 @@
 
     <Toolbar title="Text Background">
         <button
-            class="text-sm"
-            id="bg-color"
-            on:click={() => changeImage(null)}
+                class="text-sm"
+                id="bg-color"
+                on:click={() => changeImage(null)}
         >
             COLOR
         </button>
@@ -394,10 +397,10 @@
             <Tooltip.Root>
                 <Tooltip.Trigger asChild let:builder>
                     <Button
-                        builders={[builder]}
-                        aria-label="Change background image"
-                        style="background-image: url({image})"
-                        on:click={() => changeImage(image)}
+                            builders={[builder]}
+                            aria-label="Change background image"
+                            style="background-image: url({image})"
+                            on:click={() => changeImage(image)}
                     ></Button>
                 </Tooltip.Trigger>
                 <Tooltip.Content>
@@ -413,15 +416,15 @@
             <Popover.Content>
                 <div class="flex flex-col gap-2 p-2">
                     <Input
-                        type="file"
-                        id="custom-palette-json"
-                        accept=".json"
-                        multiple={false}
+                            accept=".json"
+                            id="custom-palette-json"
+                            multiple={false}
+                            type="file"
                     />
-                    <Button type="submit" on:click={customPalette}>
+                    <Button on:click={customPalette} type="submit">
                         Apply
                     </Button>
-                    <Button type="submit" on:click={deleteCustomPalette}>
+                    <Button on:click={deleteCustomPalette} type="submit">
                         Delete
                     </Button>
                 </div>
