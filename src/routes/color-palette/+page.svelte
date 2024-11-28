@@ -410,11 +410,12 @@
         {/each}
     </Toolbar>
 
-    <div class="fixed bottom-0 left-0 p-2 bg-zinc-800 transition-all hover:rounded-r-3xl hover:pr-5 active:pr-2 py-2 active:py-1 rounded-r-sm invisible md:visible">
+    <div class="fixed bottom-0 left-0 mb-5 p-2 bg-zinc-800 transition-all hover:rounded-r-3xl hover:scale-x-[105%] active:scale-x-100 rounded-r-sm invisible md:visible">
         <Popover.Root>
             <Popover.Trigger>Custom Palette</Popover.Trigger>
             <Popover.Content>
                 <div class="flex flex-col gap-2 p-2">
+                    <p>Check out the <a href="https://red.dfonline.dev/palette/example_palette.json" target="_blank" class="underline">Example palette</a> for format and schema.</p>
                     <Input
                             accept=".json"
                             id="custom-palette-json"

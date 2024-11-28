@@ -1,0 +1,86 @@
+{
+    "$schema": "https://red.dfonline.dev/palette/palette_schema.json",
+
+    "RED": {
+        "DARK_2": {
+            "hex": "#550000"
+        },
+        "DARK": {
+            "hex": "#AA0000"
+        },
+        "NEUTRAL": {
+            "hex": "#FF0000"
+        },
+        "LIGHT": {
+            "hex": "#FF5555"
+        },
+        "LIGHT_2": {
+            "hex": "#FFAAAA"
+        },
+        "LIGHT_3": {
+            "hex": "#FFD4D4"
+        }
+    },
+    "GREEN": {
+        "DARK_4": {
+            "hex": "#005500"
+        },
+        "DARK_3": {
+            "hex": "#2A7F00"
+        },
+        "DARK_2": {
+            "hex": "#00AA00"
+        },
+        "DARK": {
+            "hex": "#2AD42A"
+        },
+        "NEUTRAL": {
+            "hex": "#55FF55"
+        },
+        "LIGHT": {
+            "hex": "#7FFF7F"
+        },
+        "LIGHT_2": {
+            "hex": "#AAFFAA"
+        },
+        "LIGHT_3": {
+            "hex": "#D4FFD4"
+        }
+    },
+    "SKY": {
+        "DARK": {
+            "hex": "#2A70D4"
+        },
+        "NEUTRAL": {
+            "hex": "#55AAFF"
+        },
+        "LIGHT": {
+            "hex": "#AAD4FF"
+        }
+    },
+    "GRAY": {
+        "DARK_3": {
+            "hex": "#000000",
+            "override": "BLACK"
+        },
+        "DARK_2": {
+            "hex": "#2A2A2A"
+        },
+        "DARK": {
+            "hex": "#555555"
+        },
+        "NEUTRAL": {
+            "hex": "#808080"
+        },
+        "LIGHT": {
+            "hex": "#AAAAAA"
+        },
+        "LIGHT_2": {
+            "hex": "#D4D4D4"
+        },
+        "LIGHT_3": {
+            "hex": "#FFFFFF",
+            "override": "WHITE"
+        }
+    }
+}
