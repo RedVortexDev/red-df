@@ -5,35 +5,26 @@
     import DefaultPage from "../../components/DefaultPage.svelte";
     import {onMount} from "svelte";
     import WarningCard from "../../components/WarningCard.svelte";
+    import { ws } from '$lib/websocket';
 
-    // stuff with sending data & stuf
-    let ws: WebSocket | undefined = undefined;
     onMount(() => {
-        try {
-            ws = new WebSocket("ws://localhost:31375/");
-        } catch {
-            console.log("Couldn't connect to CodeClient.");
-            toast.error("Couldn't connect to CodeClient.");
-        } finally {
-            if (ws !== undefined) {
-                ws.onopen = () => {
-                    console.log("Connected to CodeClient.");
-                    toast.success("Connected to CodeClient!");
-                };
+        ws.connect();
 
-                ws.onmessage = (event) => {
-                    console.log("got a message: " + event.data);
-                };
-            }
-        }
+        const removeConnectListener = ws.onConnect(() => {
+            toast.success('Connected to CodeClient!');
+        });
+
+        return () => {
+            removeConnectListener();
+            ws.disconnect();
+        };
     });
 
     function sendToSocket(data: string, message?: string) {
-        if (ws != undefined && ws.readyState === 1) {
-            ws.send(data);
+        if (ws.send(data)) {
             toast.success(message ?? "Template has been sent to CodeClient!");
         } else {
-            toast.error("Couldn't connect to CodeClient.");
+            toast.error("Not connected to CodeClient!");
         }
     }
 
@@ -145,7 +136,7 @@
             readInt(); //right clicks
             readInt(); //blocks added
             readInt(); //nlocks removed
-            let midfilename = readString(); // mid or schematic filename
+           readString(); // mid or schematic filename
             if (nbsversion >= 4) {
                 fileArray.shift(); //loop on/off
                 loopCount = fileArray.shift() ?? 0; //loop count
@@ -202,7 +193,7 @@
             for (let i = 0; i < layers; i++) {
                 //Read layer data
 
-                let name = readString();
+                readString(); //layer name
 
                 if (nbsversion >= 4) {
                     fileArray.shift();
@@ -262,8 +253,8 @@
             let customPitchList = new Array(customInstruments);
             if (customInstruments >= 1) {
                 for (let i = 0; i < customInstruments; i++) {
-                    let instrumentOffset =
-                        vanillaInstruments + customInstruments;
+                    /*let instrumentOffset =
+                        vanillaInstruments + customInstruments;*/
                     let instrumentPitch = 0;
 
                     customInstrumentNames[i] = readString(); //Instrument name

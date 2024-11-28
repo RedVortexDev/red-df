@@ -59,24 +59,21 @@
     import * as Tooltip from "$lib/components/ui/tooltip";
     //import {TriangleAlert} from "lucide-svelte";
     import pako from "pako";
-    import {onMount} from "svelte";
+    import { onMount } from 'svelte';
+    import { ws } from '$lib/websocket';
 
-    let recodeSocketOpen = false
-    let codeClientSocketOpen = false
-    let recodeSocket: WebSocket;
-    let codeClientSocket: WebSocket;
     onMount(() => {
-        recodeSocket = new WebSocket('ws://localhost:31371/codeutilities/item')
-        recodeSocket.onopen = () => {
-            recodeSocketOpen = true
-        }
+        ws.connect();
 
-        codeClientSocket = new WebSocket('ws://localhost:31375');
-        codeClientSocket.onopen = () => {
-            codeClientSocketOpen = true
-        }
+        const removeConnectListener = ws.onConnect(() => {
+            toast.success('Connected to CodeClient!');
+        });
 
-    })
+        return () => {
+            removeConnectListener();
+            ws.disconnect();
+        };
+    });
 
     interface Template {
         blocks: Block[];
@@ -229,29 +226,10 @@
             }
         }
 
-        let sentTo;
-        if (recodeSocketOpen) {
-            recodeSocket.send(JSON.stringify({
-                type: "template",
-                data: JSON.stringify({
-                    author: "Red DF Website",
-                    name: "Text File to Template",
-                    code: encodeTemplate(JSON.stringify(template)).toString()
-                }),
-                source: "Red DF Website"
-            }));
-            sentTo = "recode";
-        }
-
-        if (codeClientSocketOpen) {
-            codeClientSocket.send(
-                `give {components:{"minecraft:custom_data":{PublicBukkitValues:{"hypercube:codetemplatedata":'{"author":"Red DF Website","name":"&bText File to Template","version":1,"code":"${encodeTemplate(JSON.stringify(template))}"}'}},"minecraft:custom_name":'{"extra":[{"color":"aqua","text":"Text File to Template"}],"italic":false,"text":""}'},count:1,id:"minecraft:ender_chest"}`
-            );
-            sentTo = "CodeClient";
-        }
-
-        if (!recodeSocketOpen && !codeClientSocketOpen) toast.error("Couldn't send to recode nor CodeClient!");
-        else toast.success(`Template sent to ${sentTo}!`);
+        if (ws.send(
+            `give {components:{"minecraft:custom_data":{PublicBukkitValues:{"hypercube:codetemplatedata":'{"author":"Red DF Website","name":"&bText File to Template","version":1,"code":"${encodeTemplate(JSON.stringify(template))}"}'}},"minecraft:custom_name":'{"extra":[{"color":"aqua","text":"Text File to Template"}],"italic":false,"text":""}'},count:1,id:"minecraft:ender_chest"}`
+        )) toast.success(`Template sent to CodeClient!`);
+        else toast.error("Not connected to CodeClient!");
     }
 
 </script>
