@@ -1,9 +1,13 @@
 {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
     "title": "Color Palette Schema",
     "description": "Schema for making a custom color palette to use in the Red DF website.",
     "type": "object",
     "patternProperties": {
+        "$schema": {
+            "description": "This JSON schema.",
+            "type": "string",
+            "format": "uri"
+        },
         "^[A-Z]+$": {
             "description": "A color object containing different shades.",
             "type": "object",
