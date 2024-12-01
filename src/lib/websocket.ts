@@ -38,7 +38,7 @@ export class WebSocketSender {
 
     send(data: string): boolean {
         if (this.ws?.readyState === WebSocket.OPEN) {
-            this.ws.send(JSON.stringify(data));
+            this.ws.send(data);
             return true;
         } /*else { // Consider in the future
             this.connect();

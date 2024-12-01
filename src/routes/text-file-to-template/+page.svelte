@@ -195,8 +195,8 @@
         let slot = 0;
 
         for (let index = 0; index < lines.length; index++) {
-            items.push(getStringValue(lines[index], slot));
             slot++;
+            items.push(getStringValue(lines[index], slot));
 
             // Place the action if we ran out of slots or if we're at the end of the lines
             if (slot === 27 || index === lines.length - 1) {
@@ -222,12 +222,12 @@
                         slot: 0
                     }
                 ];
-                slot = 1;
+                slot = 0;
             }
         }
 
         if (ws.send(
-            `give {components:{"minecraft:custom_data":{PublicBukkitValues:{"hypercube:codetemplatedata":'{"author":"Red DF Website","name":"&bText File to Template","version":1,"code":"${encodeTemplate(JSON.stringify(template))}"}'}},"minecraft:custom_name":'{"extra":[{"color":"aqua","text":"Text File to Template"}],"italic":false,"text":""}'},count:1,id:"minecraft:ender_chest"}`
+            `give {components:{"minecraft:custom_data":{PublicBukkitValues:{"hypercube:codetemplatedata":'{"author":"Red DF Website","name":"&bText File to Template","version":1,"code":"${encodeTemplate(JSON.stringify(template))}"}'}},"minecraft:custom_name":'{"color":"aqua","text":"Text File to Template","italic":false}'},count:1,id:"minecraft:ender_chest"}`
         )) toast.success(`Template sent to CodeClient!`);
         else toast.error("Not connected to CodeClient!");
     }
