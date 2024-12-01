@@ -199,7 +199,7 @@
             slot++;
 
             // Place the action if we ran out of slots or if we're at the end of the lines
-            if (slot === 27 || index === lines.length - 1) {
+            if (slot === 26 || index === lines.length - 1) {
                 template.blocks.push({
                     id: "block",
                     block: "set_var",
