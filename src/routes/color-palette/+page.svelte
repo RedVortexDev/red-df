@@ -42,25 +42,23 @@
         colors: Color[];
     };
 
-    const accordionSections = [
+    const colorSections =
         {
-            label: "Common DiamondFire Colors (Feel free to suggest more)",
             colors: [
                 {
                     hex: "#FFD42A",
-                    name: "MUSTARD",
+                    group: "MUSTARD",
                     shade: "NEUTRAL",
                     label: "Tokens"
                 },
                 {
                     hex: "#AAD4FF",
-                    name: "SKY",
+                    group: "SKY",
                     shade: "LIGHT",
                     label: "Sparks"
                 },
             ]
-        }
-    ];
+        };
 
     // Types
     type ColorShade = typeof COLOR_SHADES[number];
@@ -79,10 +77,10 @@
             this.shade = shade;
             this.override = override;
         }
+    }
 
-        get displayName(): string {
-            return this.override || `${this.group}_${this.shade}`.replace('_NEUTRAL', '');
-        }
+    function getDisplayName(color: Color) {
+        return color.override || `${color.group}_${color.shade}`.replace('_NEUTRAL', '');
     }
 
     // State
@@ -332,7 +330,7 @@
         const copyTag = document.getElementById("copyTag")?.ariaChecked === "true";
         const copyName = document.getElementById("copyName")?.ariaChecked === "true";
 
-        const displayName = currentColor.displayName;
+        const displayName = getDisplayName(currentColor);
 
         const copyText = copyTag ? `<${currentColor.hex}>` :
             copyName ? displayName :
@@ -462,29 +460,27 @@
     </div>
 
     <Accordion.Root class="w-full sm:max-w-[70%]">
-        {#each accordionSections as section, i}
-            <Accordion.Item value="item-{i + 1}">
-                <Accordion.Trigger>{section.label}</Accordion.Trigger>
-                <Accordion.Content>
-                    <div class="flex gap-2 items-center">
-                        {#each section.colors as color}
-                            <div class="flex flex-col items-center">
-                                {#if color.label}
-                                    <span class="-mb-3">{color.label}</span>
-                                {/if}
-                                <div class="w-8">
-                                    <button
-                                            class="palette-color"
-                                            tabindex="0"
-                                            on:click={() => clickColor(color)}
-                                            style="--color: {color.hex};"
-                                    />
-                                </div>
+        <Accordion.Item value="item-1">
+            <Accordion.Trigger>Common DiamondFire Colors (Feel free to suggest more)</Accordion.Trigger>
+            <Accordion.Content>
+                <div class="flex gap-2 items-center">
+                    {#each colorSections.colors as color}
+                        <div class="flex flex-col items-center">
+                            {#if color.label}
+                                <span class="-mb-3">{color.label}</span>
+                            {/if}
+                            <div class="w-8">
+                                <button
+                                        class="palette-color"
+                                        tabindex="0"
+                                        on:click={() => clickColor(color)}
+                                        style="--color: {color.hex};"
+                                />
                             </div>
-                        {/each}
-                    </div>
-                </Accordion.Content>
-            </Accordion.Item>
-        {/each}
+                        </div>
+                    {/each}
+                </div>
+            </Accordion.Content>
+        </Accordion.Item>
     </Accordion.Root>
 </DefaultPage>
