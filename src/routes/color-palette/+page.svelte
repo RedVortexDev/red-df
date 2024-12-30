@@ -10,23 +10,25 @@
     //@ts-ignore
     import * as Popover from "$lib/components/ui/popover";
     //@ts-ignore
+    import * as Accordion from "$lib/components/ui/accordion/index.js";
+    //@ts-ignore
     import * as RadioGroup from "$lib/components/ui/radio-group";
     import {get} from 'svelte/store';
     import {preferences} from './stores';
     import type {ColorPaletteSchema} from './palette_schema';
 
     // Constants
-    export const COLOR_SHADES = [
+    const COLOR_SHADES = [
         "DARK_4", "DARK_3", "DARK_2", "DARK", "NEUTRAL", "LIGHT", "LIGHT_2", "LIGHT_3", "LIGHT_4"
     ] as const;
 
-    export const DEFAULT_COLOR_NAMES = [
+    const DEFAULT_COLOR_NAMES = [
         "RED", "SCARLET", "ORANGE", "GOLD", "MUSTARD", "YELLOW", "LIME", "GREEN",
         "TEAL", "AQUA", "SKY", "BLUE", "PURPLE", "AMETHYST", "MAGENTA", "PINK",
         "ROSE", "BROWN", "GRAY"
     ] as const;
 
-    export const IMAGES = {
+    const IMAGES = {
         "/palette/bg_overworld.jpg": "Overworld",
         "/palette/bg_chat.png": "Chat",
         "/palette/bg_lore.png": "Lore",
@@ -34,6 +36,31 @@
         "/palette/bg_night.avif": "Night",
         "/palette/bg_nether.avif": "Nether"
     }
+
+    type ColorSection = {
+        label: string;
+        colors: Color[];
+    };
+
+    const accordionSections = [
+        {
+            label: "Common DiamondFire Colors (Feel free to suggest more)",
+            colors: [
+                {
+                    hex: "#FFD42A",
+                    name: "MUSTARD",
+                    shade: "NEUTRAL",
+                    label: "Tokens"
+                },
+                {
+                    hex: "#AAD4FF",
+                    name: "SKY",
+                    shade: "LIGHT",
+                    label: "Sparks"
+                },
+            ]
+        }
+    ];
 
     // Types
     type ColorShade = typeof COLOR_SHADES[number];
@@ -415,7 +442,8 @@
             <Popover.Trigger>Custom Palette</Popover.Trigger>
             <Popover.Content>
                 <div class="flex flex-col gap-2 p-2">
-                    <p>Check out the <a href="https://red.dfonline.dev/palette/example_palette.json" target="_blank" class="underline">Example palette</a> for format and schema.</p>
+                    <p>Check out the <a href="https://red.dfonline.dev/palette/example_palette.json" target="_blank"
+                                        class="underline">Example palette</a> for format and schema.</p>
                     <Input
                             accept=".json"
                             id="custom-palette-json"
@@ -432,4 +460,31 @@
             </Popover.Content>
         </Popover.Root>
     </div>
+
+    <Accordion.Root class="w-full sm:max-w-[70%]">
+        {#each accordionSections as section, i}
+            <Accordion.Item value="item-{i + 1}">
+                <Accordion.Trigger>{section.label}</Accordion.Trigger>
+                <Accordion.Content>
+                    <div class="flex gap-2 items-center">
+                        {#each section.colors as color}
+                            <div class="flex flex-col items-center">
+                                {#if color.label}
+                                    <span class="-mb-3">{color.label}</span>
+                                {/if}
+                                <div class="w-8">
+                                    <button
+                                            class="palette-color"
+                                            tabindex="0"
+                                            on:click={() => clickColor(color)}
+                                            style="--color: {color.hex};"
+                                    />
+                                </div>
+                            </div>
+                        {/each}
+                    </div>
+                </Accordion.Content>
+            </Accordion.Item>
+        {/each}
+    </Accordion.Root>
 </DefaultPage>
