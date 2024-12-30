@@ -37,26 +37,63 @@
         "/palette/bg_nether.avif": "Nether"
     }
 
-    type ColorSection = {
-        label: string;
-        colors: Color[];
-    };
-
     const colorSections =
         {
             colors: [
                 {
+                    label: "Tokens",
                     hex: "#FFD42A",
                     group: "MUSTARD",
-                    shade: "NEUTRAL",
-                    label: "Tokens"
+                    shade: "NEUTRAL"
                 },
                 {
+                    label: "Tickets",
+                    hex: "#FFD4AA",
+                    group: "BROWN",
+                    shade: "LIGHT_2"
+                },
+                {
+                    label: "Sparks",
                     hex: "#AAD4FF",
                     group: "SKY",
-                    shade: "LIGHT",
-                    label: "Sparks"
+                    shade: "LIGHT"
                 },
+                {
+                    label: "LagSlayer Brackets",
+                    hex: "#FF5555",
+                    group: "RED",
+                    shade: "LIGHT"
+                },
+                {
+                    label: "LagSlayer Text",
+                    hex: "#FFAAAA",
+                    group: "RED",
+                    shade: "LIGHT_2"
+                },
+                {
+                    label: "Warning Brackets",
+                    hex: "#FF7F55",
+                    group: "ORANGE",
+                    shade: "LIGHT"
+                },
+                {
+                    label: "Warning Text",
+                    hex: "#FFAA7F",
+                    group: "ORANGE",
+                    shade: "LIGHT_2"
+                },
+                {
+                    label: "VIP Brackets",
+                    hex: "#FFAA00",
+                    group: "GOLD",
+                    shade: "NEUTRAL"
+                },
+                {
+                    label: "VIP Star",
+                    hex: "#FFD47F",
+                    group: "GOLD",
+                    shade: "LIGHT"
+                }
             ]
         };
 
@@ -463,15 +500,15 @@
         <Accordion.Item value="item-1">
             <Accordion.Trigger>Common DiamondFire Colors (Feel free to suggest more)</Accordion.Trigger>
             <Accordion.Content>
-                <div class="flex gap-2 items-center">
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2 px-4 py-2 place-items-center">
                     {#each colorSections.colors as color}
-                        <div class="flex flex-col items-center">
+                        <div class="flex flex-col items-center w-8">
                             {#if color.label}
-                                <span class="-mb-3">{color.label}</span>
+                                <span class="-mb-2 text-center text-sm h-10 flex items-end justify-center">{color.label}</span>
                             {/if}
                             <div class="w-8">
                                 <button
-                                        class="palette-color"
+                                        class="palette-color rounded-sm"
                                         tabindex="0"
                                         on:click={() => clickColor(color)}
                                         style="--color: {color.hex};"
