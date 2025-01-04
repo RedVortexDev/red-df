@@ -7,6 +7,18 @@
     src: url('/minecraft.otf') format('opentype');
 }
 
+@font-face {
+    font-family: 'minecraft-small-caps';
+    src: url('/Minecraft Small Caps.ttf') format('truetype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'minecraft-small-caps';
+    src: url('/Minecraft Small Caps Bold.ttf') format('truetype');
+    font-weight: bold;
+}
+
 @layer base {
     :root {
         --background: 0 0% 3.9%;

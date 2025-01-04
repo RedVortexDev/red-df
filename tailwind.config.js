@@ -56,7 +56,8 @@ const config = {
 				sm: "calc(var(--radius) - 4px)"
 			},
 			fontFamily: {
-				sans: ['Space Grotesk Variable', 'sans-serif']
+				sans: ['Space Grotesk Variable', 'sans-serif'],
+				small_caps: ['minecraft-small-caps', "Space Grotesk Variable", 'sans-serif'],
 			},
 			animation: {
 				'blink': 'blink 1s infinite'

@@ -1,4 +1,5 @@
 <script lang="ts">
+    import FontPreview from "./FontPreview.svelte"
     import Button from "$lib/components/ui/button/button.svelte";
     import Checkbox from "$lib/components/ui/checkbox/checkbox.svelte";
     import Input from "$lib/components/ui/input/input.svelte";
@@ -96,4 +97,6 @@
     </Toolbar>
 
     <InfoCard title="Have more ideas for text utilities?" message="Feel free to make an issue on the GitHub repository! (in the navigation bar)"/>
+
+    <FontPreview />
 </DefaultPage>
