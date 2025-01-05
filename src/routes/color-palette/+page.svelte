@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onMount } from 'svelte';
     import DefaultPage from "../../components/DefaultPage.svelte";
     import {Label} from "$lib/components/ui/label";
     import Toolbar from "../../components/Toolbar.svelte";
@@ -36,6 +37,18 @@
         "/palette/bg_night.avif": "Night",
         "/palette/bg_nether.avif": "Nether"
     }
+
+    let loadedImages: Record<string, boolean> = {};
+
+    onMount(() => {
+        Object.keys(IMAGES).forEach(url => {
+            const img = new Image();
+            img.src = url;
+            img.onload = () => {
+                loadedImages[url] = true;
+            };
+        });
+    });
 
     const colorSections =
         {
@@ -462,8 +475,9 @@
                             builders={[builder]}
                             aria-label="Change background image"
                             style="background-image: url({image})"
+                            class="{loadedImages[image] ? '' : 'palette-skeleton'} transition-opacity"
                             on:click={() => changeImage(image)}
-                    ></Button>
+                    />
                 </Tooltip.Trigger>
                 <Tooltip.Content>
                     <p>{description}</p>

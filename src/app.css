@@ -98,6 +98,10 @@
     .blinker-visible {
         @apply bg-theme;
     }
+
+    .palette-skeleton {
+         background: linear-gradient(90deg, rgb(53, 58, 60) 0%, rgb(71, 78, 81) 100%) !important;
+    }
 }
 
 #sidebar-content > button {
