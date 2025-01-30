@@ -58,7 +58,7 @@
     });
 </script>
 
-<div class="wrapper opacity-0 text-3xl font-bold" style="perspective: 1000px" bind:this={container}>
+<div class="wrapper opacity-0 text-3xl font-bold flex" style="perspective: 1000px" bind:this={container}>
     {#each textParts.greeting.split("") as char}
         <span class="char white inline-block transform-origin-center will-change-transform">
             {char === " " ? "\u00A0" : char}
