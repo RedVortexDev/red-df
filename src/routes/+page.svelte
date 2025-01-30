@@ -3,6 +3,7 @@
     import PageContent from "../components/PageContent.svelte";
     import {Info} from "lucide-svelte";
     import PageMeta from "../components/PageMeta.svelte";
+    import HeyImRed from "../components/HeyImRed.svelte";
 </script>
 
 <PageMeta description="DiamondFire Utilities"/>
@@ -11,7 +12,9 @@
 <PageContent>
     <img alt="RedVortex_ Player Head" class="w-44 h-auto"
          src="https://mc-heads.net/head/fc513f92b66246e2ada30a3eb73808a3">
-    <h1 class="font-medium">Hey, I'm <span class="text-theme font-bold">Red</span>!</h1>
+    <div class="mb-9 -mt-4">
+        <HeyImRed/>
+    </div>
     <p class="text-center max-w-md">This is my website, here you can find a bunch of DiamondFire utilities.</p>
     <br>
     <div class="flex flex-col items-center justify-center">
