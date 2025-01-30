@@ -9,13 +9,15 @@ Pull requests and issues **ARE** welcome!!
 
 ## Features
 - Color Palette
-  * Copy in either hex, minimessage tag, or color name
+  * Copy in either hex, MiniMessage tag, or color name
   * Custom palette uploads
-  * Set color preview's background for contrast checks
+  * Set the color preview background for checking contrast
 - NBS Importer
 - Text File to Template
   * Configurable var scope and name
   * Configurable function name, and whether to use a parameter
 - Text Utilities
   * Turn text into small caps
+  * Text wrap to a certain width
+  * Download the Minecraft Small Caps (Regular and Bold) font by yours truly
   * Copy a ZWNJ
