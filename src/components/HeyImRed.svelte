@@ -37,12 +37,22 @@
             gsap.to(char, {
                 y: 0,
                 duration: 2,
-                repeat: -1,
                 yoyo: true,
                 ease: "sine.inOut",
                 delay: index * 0.08,
                 rotateZ: gsap.utils.random(-20, 10),
                 scale: gsap.utils.random(0.85, 1.15),
+            });
+
+            gsap.to(char, {
+                y: 20,
+                duration: 2,
+                repeat: 0,
+                yoyo: true,
+                ease: "sine.inOut",
+                delay: index * 0.08 + 2,
+                rotateZ: 0,
+                scale: 1,
             });
         });
     });
