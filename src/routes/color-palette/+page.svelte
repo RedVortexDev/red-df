@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
+    import {onMount} from 'svelte';
     import DefaultPage from "../../components/DefaultPage.svelte";
     import {Label} from "$lib/components/ui/label";
     import Toolbar from "../../components/Toolbar.svelte";
@@ -17,6 +17,7 @@
     import {get} from 'svelte/store';
     import {preferences} from './stores';
     import type {ColorPaletteSchema} from './palette_schema';
+    import {gsap} from "gsap";
 
     // Constants
     const COLOR_SHADES = [
@@ -40,6 +41,28 @@
 
     let loadedImages: Record<string, boolean> = {};
 
+    function animateColors() {
+        document.querySelector(".palette-container")!.style.display = "grid";
+        const colors = gsap.utils.toArray(".palette-color-wrapper");
+        const tl = gsap.timeline();
+        colors.forEach((color, index) => {
+            tl.set(color, {
+                scale: 0.01,
+                ease: "none",
+                duration: 0,
+                alpha: 0,
+            });
+            gsap.delayedCall(0.01, () => {
+                tl.to(color, {
+                    alpha: 1,
+                    scale: 1,
+                    ease: "expo.in",
+                    duration: 1,
+                }, index ? "<=+0.015" : 0);
+            });
+        });
+    }
+
     onMount(() => {
         Object.keys(IMAGES).forEach(url => {
             const img = new Image();
@@ -48,6 +71,9 @@
                 loadedImages[url] = true;
             };
         });
+
+        // setTimeout(animateColors, 500);
+        animateColors()
     });
 
     const colorSections =
@@ -431,30 +457,32 @@
         </div>
     </RadioGroup.Root>
 
-    <div class="palette-container">
+    <div class="palette-container" style="display: none;">
         {#each colorNames as color}
             {#each COLOR_SHADES as shade}
                 {#if getColorObj(color, shade)}
-                    <div
-                            class="palette-color"
-                            role="button"
-                            tabindex="0"
-                            on:click={() => {
+                    <div class="palette-color-wrapper"
+                         style="
+                            grid-row: {getGridPosition(shade, 'row')};
+                            grid-column: {getGridPosition(color, 'column')};
+                         "
+                    >
+                        <div
+                                class="palette-color"
+                                role="button"
+                                tabindex="0"
+                                on:click={() => {
                             const colorObj = getColorObj(color, shade);
                             if (colorObj) clickColor(colorObj);
                         }}
-                            on:keydown={(e) => {
+                                on:keydown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
                                 const colorObj = getColorObj(color, shade);
                                 if (colorObj) clickColor(colorObj);
                             }
-                        }}
-                            style="
-                            --color: {getColorObj(color, shade)?.hex};
-                            grid-row: {getGridPosition(shade, 'row')};
-                            grid-column: {getGridPosition(color, 'column')};
-                        "
-                    ></div>
+                        }} style="--color: {getColorObj(color, shade)?.hex};"
+                        ></div>
+                    </div>
                 {/if}
             {/each}
         {/each}
@@ -510,7 +538,7 @@
         </Popover.Root>
     </div>
 
-    <Accordion.Root class="w-full sm:max-w-[70%]">
+    <Accordion.Root class="w-full sm:max-w-[70%] hidden md:visible">
         <Accordion.Item value="item-1">
             <Accordion.Trigger>Common DiamondFire Colors (Feel free to suggest more)</Accordion.Trigger>
             <Accordion.Content>
