@@ -42,25 +42,27 @@
     let loadedImages: Record<string, boolean> = {};
 
     function animateColors() {
-        document.querySelector(".palette-container")!.style.display = "grid";
         const colors = gsap.utils.toArray(".palette-color-wrapper");
         const tl = gsap.timeline();
         colors.forEach((color, index) => {
-            tl.set(color, {
-                scale: 0.01,
+            tl.set(color as HTMLDivElement, {
+                scale: 0,
                 ease: "none",
                 duration: 0,
                 alpha: 0,
+                filter: "blur(16px)"
             });
             gsap.delayedCall(0.01, () => {
-                tl.to(color, {
-                    alpha: 1,
+                tl.to(color as HTMLDivElement, {
                     scale: 1,
                     ease: "expo.in",
-                    duration: 1,
+                    duration: 0.5,
+                    alpha: 1,
+                    filter: "blur(0px)"
                 }, index ? "<=+0.015" : 0);
             });
         });
+        (document.querySelector(".palette-container")! as HTMLDivElement).style.display = "grid";
     }
 
     onMount(() => {
@@ -72,7 +74,6 @@
             };
         });
 
-        // setTimeout(animateColors, 500);
         animateColors()
     });
 

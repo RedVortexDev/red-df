@@ -18,6 +18,7 @@
             opacity: 0,
             y: 50,
             rotateX: -90,
+            filter: `blur(8px)`,
         });
 
         const tl = gsap.timeline();
@@ -27,6 +28,7 @@
             opacity: 1,
             y: 0,
             rotateX: 0,
+            filter: `blur(0px)`,
             stagger: {
                 each: 0.1,
                 ease: "power.out",
@@ -49,7 +51,7 @@
                 duration: 2,
                 repeat: 0,
                 yoyo: true,
-                ease: "sine.inOut",
+                ease: "sine.inOut(15)",
                 delay: index * 0.08 + 2,
                 rotateZ: 0,
                 scale: 1,

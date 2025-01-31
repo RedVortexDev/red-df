@@ -51,7 +51,7 @@
         @apply flex flex-col p-2 mb-2 justify-center items-center rounded-lg;
     }
 
-    header > h1 {
+    header .title {
         @apply text-3xl md:text-6xl font-black;
     }
 
@@ -115,7 +115,10 @@
 }
 
 .palette-color-wrapper {
-    @apply transition-all z-0 hover:z-50 w-full;
+    @apply z-0 hover:z-50 w-full;
+    transition-property: z-index;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
 }
 
 .palette-container {
