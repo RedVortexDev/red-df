@@ -109,16 +109,9 @@
 }
 
 .palette-color {
-    @apply cursor-pointer transition-all md:hover:scale-125 active:scale-[120%] active:rounded-sm md:hover:rounded-md md:hover:shadow-black/20 md:hover:shadow-lg w-full;
+    @apply z-0 hover:z-50 cursor-pointer transition-all md:hover:scale-125 active:scale-[120%] active:rounded-sm md:hover:rounded-md md:hover:shadow-black/20 md:hover:shadow-lg w-full h-full;
     background-color: var(--color);
     padding-bottom: 100%;
-}
-
-.palette-color-wrapper {
-    @apply z-0 hover:z-50 w-full;
-    transition-property: z-index;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-duration: 150ms;
 }
 
 .palette-container {

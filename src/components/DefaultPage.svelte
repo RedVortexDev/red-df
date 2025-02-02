@@ -18,11 +18,10 @@
         chars.forEach((char, index) => {
             tl.call(() => {
                 gsap.from(char, {
-                    duration: 0.5,
+                    duration: chars.length > 15 ? 0.25 : 0.5,
                     opacity: 0,
-                    y: index % 2 == 0 ? -25 : 25,
-                    rotateZ: gsap.utils.random(-20, 20),
-                    ease: "back.out(2)",
+                    y:  chars.length > 15 ? 50 : index % 2 == 0 ? -25 : 25,
+                    ease: chars.length > 15 ? "sine.out" : "back.out(2)",
                     delay: index * 0.05,
                 });
             })
@@ -33,7 +32,7 @@
             y: 50,
             brightness: 0,
             ease: "back.out(1)",
-            delay: 0.5,
+            delay: chars.length > 15 ? 0.8 : 0.5,
         });
     });
 

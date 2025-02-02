@@ -42,27 +42,18 @@
     let loadedImages: Record<string, boolean> = {};
 
     function animateColors() {
-        const colors = gsap.utils.toArray(".palette-color-wrapper");
-        const tl = gsap.timeline();
-        colors.forEach((color, index) => {
-            tl.set(color as HTMLDivElement, {
-                scale: 0,
-                ease: "none",
-                duration: 0,
-                alpha: 0,
-                filter: "blur(16px)"
-            });
-            gsap.delayedCall(0.01, () => {
-                tl.to(color as HTMLDivElement, {
-                    scale: 1,
-                    ease: "expo.in",
-                    duration: 0.5,
-                    alpha: 1,
-                    filter: "blur(0px)"
-                }, index ? "<=+0.015" : 0);
-            });
+        const container = document.querySelector(".palette-container");
+
+        gsap.from(container, {
+            duration: 0.85,
+            opacity: 0,
+            y: 80,
+            ease: "sine.out",
+            scale: 0.8,
+            filter: "blur(8px)"
         });
-        (document.querySelector(".palette-container")! as HTMLDivElement).style.display = "grid";
+
+        (container as HTMLDivElement).style.display = "grid";
     }
 
     onMount(() => {
@@ -462,28 +453,25 @@
         {#each colorNames as color}
             {#each COLOR_SHADES as shade}
                 {#if getColorObj(color, shade)}
-                    <div class="palette-color-wrapper"
-                         style="
-                            grid-row: {getGridPosition(shade, 'row')};
-                            grid-column: {getGridPosition(color, 'column')};
-                         "
-                    >
-                        <div
-                                class="palette-color"
-                                role="button"
-                                tabindex="0"
-                                on:click={() => {
+
+                    <div
+                            class="palette-color"
+                            role="button"
+                            tabindex="0"
+                            on:click={() => {
                             const colorObj = getColorObj(color, shade);
                             if (colorObj) clickColor(colorObj);
                         }}
-                                on:keydown={(e) => {
+                            on:keydown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
                                 const colorObj = getColorObj(color, shade);
                                 if (colorObj) clickColor(colorObj);
                             }
-                        }} style="--color: {getColorObj(color, shade)?.hex};"
-                        ></div>
-                    </div>
+                        }} style="
+                            --color: {getColorObj(color, shade)?.hex};
+                            grid-row: {getGridPosition(shade, 'row')};
+                            grid-column: {getGridPosition(color, 'column')};"
+                    ></div>
                 {/if}
             {/each}
         {/each}

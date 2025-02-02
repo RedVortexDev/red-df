@@ -24,7 +24,7 @@
         const tl = gsap.timeline();
 
         tl.to(chars, {
-            duration: 0.8,
+            duration: 0.4,
             opacity: 1,
             y: 0,
             rotateX: 0,
@@ -38,23 +38,31 @@
         chars.forEach((char, index) => {
             gsap.to(char, {
                 y: 0,
-                duration: 2,
+                duration: 1,
                 yoyo: true,
-                ease: "sine.inOut",
+                ease: "sine.out",
                 delay: index * 0.08,
                 rotateZ: gsap.utils.random(-20, 10),
                 scale: gsap.utils.random(0.85, 1.15),
             });
 
             gsap.to(char, {
-                y: 20,
-                duration: 2,
-                repeat: 0,
+                y: 40,
+                duration: 0.8,
                 yoyo: true,
-                ease: "sine.inOut(15)",
-                delay: index * 0.08 + 2,
+                ease: "sine.in",
+                delay: index * 0.08 + 1,
                 rotateZ: 0,
                 scale: 1,
+            });
+
+            gsap.to(char, {
+                y: 20,
+                duration: 0.5,
+                repeat: 0,
+                yoyo: true,
+                ease: "sine.out",
+                delay: index * 0.08 + 1.8,
             });
         });
     });
