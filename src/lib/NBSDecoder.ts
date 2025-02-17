@@ -44,6 +44,7 @@ class NBSDecoder {
         const layers: number = this.readShort(fileArray);
         title = this.readString(fileArray);
         title = title.length === 0 ? fileName.split('.')[0] : title;
+        title = title.replace("'", "\\'");
         author = this.readString(fileArray);
         this.readString(fileArray); // original author
         this.readString(fileArray); // description

@@ -46,7 +46,7 @@
                 fileArray = Array.from(uint8Array);
 
                 try {
-                    const songData = NBSDecoder.parse(fileArray, nbsElement.files[0].name);
+                    const songData = NBSDecoder.parse(fileArray, nbsElement.files[0].name.replace("'", "\\'"));
                     const command = handleNBSFile(songData);
 
                     sendToSocket(
