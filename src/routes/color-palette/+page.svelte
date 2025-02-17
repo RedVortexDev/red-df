@@ -45,10 +45,10 @@
         const container = document.querySelector(".palette-container");
 
         gsap.from(container, {
-            duration: 0.85,
+            duration: 0.8,
             opacity: 0,
             y: 80,
-            ease: "sine.out",
+            ease: "elastic.out(0.2)",
             scale: 0.8,
             filter: "blur(8px)"
         });

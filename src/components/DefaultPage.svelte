@@ -30,7 +30,6 @@
             duration: 0.5,
             opacity: 0,
             y: 50,
-            brightness: 0,
             ease: "back.out(1)",
             delay: chars.length > 15 ? 0.8 : 0.5,
         });
